@@ -25,7 +25,15 @@
     margin-bottom: 20px;
     filter: drop-shadow(2px 2px 0px #fff);
 }
-
+@media (max-width:767px) {
+  .logo {
+    width: 170px;
+}
+.welcome-card {
+    padding: 40px 20px;
+    margin: 0 10px;
+}
+}
 /* Heading */
 .welcome-card h1 {
   color: #fff;
