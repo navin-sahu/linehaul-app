@@ -1,17 +1,19 @@
-import AdminHeader from "./AdminHeader";
 import AdminSidebar from "./AdminSidebar";
-import AdminFooter from "./AdminFooter";
+import AdminHeader from "./AdminHeader";
+import AdminMobileNav from "./AdminMobileNav";
 import "../css/Style.css";
 
 const AdminLayout = ({ children }) => {
   return (
-    <div className="admin-layout">
+    <div className="admin-root">
       <AdminSidebar />
-      <div className="admin-main">
+
+      <div className="admin-area">
         <AdminHeader />
-        <div className="admin-content">{children}</div>
-        <AdminFooter />
+        <main className="admin-content">{children}</main>
       </div>
+
+      <AdminMobileNav />
     </div>
   );
 };

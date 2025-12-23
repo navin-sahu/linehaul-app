@@ -1,8 +1,11 @@
 const AdminHeader = () => {
   return (
     <header className="admin-header">
-      <h2>Linehaul – Dispatch Dashboard</h2>
-      <span className="admin-user">Admin</span>
+      <input type="search" placeholder="Search" />
+      <div className="header-right">
+        <span className="bell">🔔</span>
+        <span className="avatar">A</span>
+      </div>
     </header>
   );
 };

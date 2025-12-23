@@ -1,15 +1,15 @@
 const AdminSidebar = () => {
   return (
     <aside className="admin-sidebar">
-      <h3>Planner</h3>
-      <ul>
-        <li>Dashboard</li>
-        <li>Daily Loadplans</li>
-        <li>Trailers</li>
-        <li>Drivers</li>
-        <li>Sailings</li>
-        <li>Reports</li>
-      </ul>
+      <div className="logo"><img src="/images/logo.png" alt="Linehaul Logo" className="logo" /></div>
+
+      <nav>
+        <a className="active">Dashboard</a>
+        <a>Load Board</a>
+        <a>Route Planner</a>
+        <a>Analytics</a>
+        <a>Settings</a>
+      </nav>
     </aside>
   );
 };

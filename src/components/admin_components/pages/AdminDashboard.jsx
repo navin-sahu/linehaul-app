@@ -1,34 +1,14 @@
 import AdminLayout from "../layout/AdminLayout";
-import KPIBox from "../widgets/KPIBox";
-import CityStatusCard from "../widgets/CityStatusCard";
 import "../css/AdminDashboard.css";
-
-const adminStats = {
-  totalTrailers: 48,
-  loadplansCompleted: 39,
-  exceptions: 6,
-  lateSailings: 3,
-};
-
-const cities = ["Wellington", "Auckland", "Christchurch", "Taupo"];
 
 const AdminDashboard = () => {
   return (
     <AdminLayout>
-      <h1>Dashboard Overview</h1>
-
-      <div className="kpi-grid">
-        <KPIBox title="Total Trailers" value={adminStats.totalTrailers} />
-        <KPIBox title="Loadplans Done" value={adminStats.loadplansCompleted} />
-        <KPIBox title="Exceptions" value={adminStats.exceptions} />
-        <KPIBox title="Late Sailings" value={adminStats.lateSailings} />
-      </div>
-
-      <h2>City Status</h2>
-      <div className="city-grid">
-        {cities.map((city) => (
-          <CityStatusCard key={city} city={city} />
-        ))}
+      <div className="dashboard-grid">
+        <div className="card large">Truck Illustration / Status</div>
+        <div className="card map">Map / Vision</div>
+        <div className="card">KPIs</div>
+        <div className="card">Charts</div>
       </div>
     </AdminLayout>
   );

@@ -1,49 +1,31 @@
-.kpi-grid {
+.dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 16px;
-  margin: 20px 0 40px;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
 }
 
-.kpi-box {
-  background: #391d38;
-  padding: 22px;
-  border-radius: 10px;
-  text-align: center;
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 14px;
+  min-height: 160px;
 }
 
-.kpi-box h3 {
-  font-size: 32px;
-  margin: 0;
-  color: #fff;
+/* Layout like reference */
+.card.large {
+  grid-column: span 7;
 }
 
-.kpi-box p {
-  margin-top: 6px;
-  font-size: 14px;
-  opacity: 0.8;
+.card.map {
+  grid-column: span 5;
 }
 
-.city-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 18px;
-}
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
 
-.city-card {
-  background: #1a1a1a;
-  padding: 18px;
-  border-radius: 10px;
-  border-left: 4px solid #391d38;
-}
-
-.city-card h3 {
-  margin-bottom: 10px;
-  font-size: 18px;
-}
-
-.city-card p {
-  font-size: 14px;
-  margin: 4px 0;
-  opacity: 0.85;
+  .card {
+    grid-column: span 1 !important;
+  }
 }
