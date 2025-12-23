@@ -70,3 +70,27 @@
   transform: translateY(-2px);
   opacity: 0.9;
 }
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.login-form input {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #000;
+  font-size: 15px;
+  outline: none;
+}
+
+.login-form input:focus {
+  border-color: #391d38;
+}
+
+.error {
+  color: #ffb3b3;
+  font-size: 14px;
+}

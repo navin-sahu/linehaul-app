@@ -1,13 +1,21 @@
+import { Routes, Route } from "react-router-dom";
+import "./App.css";
 import Welcome from "./components/Welcome";
-import './App.css';
+import AdminLogin from "./components/AdminLogin";
+import DriverLogin from "./components/DriverLogin";
+import AdminDashboard from "./components/AdminDashboard";
+import DriverDashboard from "./components/DriverDashboard";
 
 function App() {
-
   return (
-    <>
-      <Welcome />
-    </>
-  )
+    <Routes>
+      <Route path="/" element={<Welcome />} />
+      <Route path="/admin-login" element={<AdminLogin />} />
+      <Route path="/driver-login" element={<DriverLogin />} />
+      <Route path="/admin-dashboard" element={<AdminDashboard />} />
+      <Route path="/driver-dashboard" element={<DriverDashboard />} />
+    </Routes>
+  );
 }
 
-export default App
+export default App;
