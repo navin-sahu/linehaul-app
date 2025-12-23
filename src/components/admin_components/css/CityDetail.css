@@ -1,0 +1,26 @@
+.city-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.city-tabs button {
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.loadplan-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.loadplan-table th,
+.loadplan-table td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.status.checked { color: green; }
+.status.no-loadplan { color: red; }

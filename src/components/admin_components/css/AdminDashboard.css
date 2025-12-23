@@ -29,3 +29,26 @@
     grid-column: span 1 !important;
   }
 }
+.city-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.city-summary-card {
+  background: #fff;
+  padding: 18px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.city-summary-card:hover {
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.date-nav {
+  display: flex;
+  gap: 10px;
+  margin: 12px 0 24px;
+}

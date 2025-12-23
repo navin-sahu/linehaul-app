@@ -1,14 +1,27 @@
+import { useNavigate } from "react-router-dom";
 import AdminLayout from "../layout/AdminLayout";
+import DateNavigator from "../widgets/DateNavigator";
+import CitySummaryCard from "../widgets/CitySummaryCard";
+import { todaySummary } from "../data/adminDummyData";
 import "../css/AdminDashboard.css";
 
 const AdminDashboard = () => {
+  const navigate = useNavigate();
+
   return (
     <AdminLayout>
-      <div className="dashboard-grid">
-        <div className="card large">Truck Illustration / Status</div>
-        <div className="card map">Map / Vision</div>
-        <div className="card">KPIs</div>
-        <div className="card">Charts</div>
+      <h1>Today’s Dashboard</h1>
+
+      <DateNavigator />
+
+      <div className="city-summary-grid">
+        {todaySummary.map((city) => (
+          <CitySummaryCard
+            key={city.city}
+            data={city}
+            onClick={() => navigate(`/admin/city/${city.city}`)}
+          />
+        ))}
       </div>
     </AdminLayout>
   );
