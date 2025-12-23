@@ -10,17 +10,18 @@ const AdminLogin = () => {
   const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (
-      username === adminCredentials.username &&
-      password === adminCredentials.password
-    ) {
-      navigate("/admin-dashboard");
-    } else {
-      setError("Invalid admin credentials");
-    }
-  };
+  if (
+    username === adminCredentials.username &&
+    password === adminCredentials.password
+  ) {
+    navigate("/admin/dashboard"); 
+  } else {
+    setError("Invalid admin credentials");
+  }
+};
+
 
   return (
     <div className="welcome-wrapper">

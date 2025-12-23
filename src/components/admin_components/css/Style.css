@@ -16,7 +16,9 @@
     max-width: 100%;
     filter: drop-shadow(1px 1px 0px #fff);
 }
-
+.admin-sidebar .logo img {
+    max-width: 100%;
+}
 .admin-sidebar nav a {
     display: block;
     padding: 12px;

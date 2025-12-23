@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import AdminLayout from "../layout/AdminLayout";
 import DateNavigator from "../widgets/DateNavigator";
 import CitySummaryCard from "../widgets/CitySummaryCard";
 import { todaySummary } from "../data/adminDummyData";
@@ -9,7 +8,7 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
 
   return (
-    <AdminLayout>
+    <>
       <h1>Today’s Dashboard</h1>
 
       <DateNavigator />
@@ -23,7 +22,7 @@ const AdminDashboard = () => {
           />
         ))}
       </div>
-    </AdminLayout>
+    </>
   );
 };
 
