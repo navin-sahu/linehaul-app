@@ -3,8 +3,8 @@ import "./App.css";
 import Welcome from "./components/Welcome";
 import AdminLogin from "./components/AdminLogin";
 import DriverLogin from "./components/DriverLogin";
-import AdminDashboard from "./components/AdminDashboard";
-import DriverDashboard from "./components/DriverDashboard";
+import AdminDashboard from "./components/admin_components/pages/AdminDashboard";
+import DriverDashboard from "./components/driver_components/pages/DriverDashboard";
 
 function App() {
   return (

@@ -1,3 +1,4 @@
+import "../css/DriverDashboard.css"
 const driverData = {
   name: "John Driver",
   trailer: "TR-458",
