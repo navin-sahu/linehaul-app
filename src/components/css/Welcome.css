@@ -21,8 +21,9 @@
 
 /* Logo */
 .logo {
-  width: 265px;
-  margin-bottom: 20px;
+    width: 265px;
+    margin-bottom: 20px;
+    filter: drop-shadow(2px 2px 0px #fff);
 }
 
 /* Heading */
