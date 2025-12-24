@@ -1,6 +1,4 @@
 
-const TODAY = new Date().toISOString().slice(0, 10);
-
 export const LinehaulPlanData = {
   areas: [
     {
@@ -15,7 +13,7 @@ export const LinehaulPlanData = {
           instructions: "straight to boat",
           boats: "0815 bb",
           load: "South",
-          planDate: TODAY
+          planDate: "2025-12-24"
         },
         {
           trucks: "R2",
@@ -26,7 +24,7 @@ export const LinehaulPlanData = {
           instructions: "straight to boat",
           boats: "0815 bb",
           load: "CHC",
-          planDate: TODAY
+          planDate: "2025-12-23"
         }
       ]
     },
@@ -42,7 +40,7 @@ export const LinehaulPlanData = {
           instructions: "ctz trailer return",
           boats: "n/a",
           load: "nsn/bln",
-          planDate: TODAY
+          planDate: "2025-12-24"
         }
       ]
     },
@@ -58,7 +56,7 @@ export const LinehaulPlanData = {
           instructions: "drop ILL p/up ILL",
           boats: "Interislander",
           load: "empty",
-          planDate: TODAY
+          planDate: "2025-12-23"
         },
         {
           trucks: "FHL25",
@@ -69,7 +67,7 @@ export const LinehaulPlanData = {
           instructions: "DROP ILL",
           boats: "INTERISLANDER",
           load: "akl/uni",
-          planDate: TODAY
+          planDate: "2025-12-24"
         }
       ]
     },
@@ -85,7 +83,7 @@ export const LinehaulPlanData = {
           instructions: "",
           boats: "",
           load: "ctz19-B",
-          planDate: TODAY
+          planDate: "2025-12-23"
         },
         {
           trucks: "ANR02",
@@ -96,7 +94,7 @@ export const LinehaulPlanData = {
           instructions: "DEPOT",
           boats: "BLUEBRIDGE",
           load: "ctz19",
-          planDate: TODAY
+          planDate: "2025-12-24"
         }
       ]
     }

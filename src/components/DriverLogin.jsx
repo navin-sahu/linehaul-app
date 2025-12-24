@@ -16,7 +16,9 @@ const DriverLogin = () => {
       username === driverCredentials.username &&
       password === driverCredentials.password
     ) {
-      navigate("/driver-dashboard");
+      sessionStorage.setItem("user", "driver");
+navigate("/driver-dashboard", { replace: true });
+
     } else {
       setError("Invalid driver credentials");
     }

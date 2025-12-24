@@ -16,7 +16,9 @@ const AdminLogin = () => {
     username === adminCredentials.username &&
     password === adminCredentials.password
   ) {
-    navigate("/admin/dashboard"); 
+    sessionStorage.setItem("user", "admin");
+navigate("/admin/dashboard", { replace: true });
+
   } else {
     setError("Invalid admin credentials");
   }
