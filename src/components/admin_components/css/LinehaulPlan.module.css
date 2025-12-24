@@ -25,7 +25,10 @@
   font-weight: 700;
   color: #153057;
 }
-
+.areasList{
+  max-height: 300px;
+  overflow-y: auto;
+}
 .areaItem {
     display: flex;
     align-items: center;
@@ -88,18 +91,18 @@ background: #391d38;
 .entryForm input{
 margin-bottom: 0;
 }
-.addAreaRow {
+.linhaulPlanWrapper .addAreaRow {
   display: flex;
   gap: 6px;
   margin-bottom: 10px;
 }
 
-.addAreaRow input {
+.linhaulPlanWrapper .addAreaRow input {
   flex: 1;
   padding: 8px;
   font-size: 13px;
 }
-.addBtn {
+.linhaulPlanWrapper .addBtn {
   width: 33px;
   height: 33px;
   border: none;
@@ -112,22 +115,22 @@ margin-bottom: 0;
   border-radius: 4px;
 }
 
-.addBtn svg {
+.linhaulPlanWrapper .addBtn svg {
   font-size: 20x;
 }
 
-.addBtn:hover {
+.linhaulPlanWrapper .addBtn:hover {
   background: #000;
 }
-.pdfBtn {
-  background: #3278da;
-  color: #fff;
+.linhaulPlanWrapper .pdfBtn {
+  background: #3278da !important;
+  color: #fff !important;
   border: none;
   padding: 4px 8px;
   cursor: pointer;
 }
 
-.exportBtn {
+.linhaulPlanWrapper .exportBtn {
   margin-top: 12px;
   padding: 8px 16px;
   background: #de9322;

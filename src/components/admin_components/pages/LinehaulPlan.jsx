@@ -393,7 +393,7 @@ const LinehaulPlan = () => {
               <FiPlus />
             </button>
           </div>
-
+<div className={styles.areasList}>
           {appData.areas.map((a) => (
             <div
               key={a.name}
@@ -415,6 +415,7 @@ const LinehaulPlan = () => {
               </button>
             </div>
           ))}
+          </div>
         </div>
 
 
