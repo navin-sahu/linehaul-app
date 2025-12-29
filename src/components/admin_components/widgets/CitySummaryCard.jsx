@@ -1,10 +1,11 @@
 import styles from "../css/CitySummaryCard.module.css";
 
 const CitySummaryCard = ({ data, onClick }) => {
-  const completed = data.completed || 0;
-  const total = data.total || 0;
-  const pending = Math.max(total - completed, 0);
+  if (!data) return null; // safety guard
 
+  const { city, total, completed, transportIssues } = data;
+
+  const pending = Math.max(total - completed, 0);
   const completedPercent = total
     ? Math.round((completed / total) * 100)
     : 0;
@@ -13,7 +14,7 @@ const CitySummaryCard = ({ data, onClick }) => {
     <div className={`${styles.citySummaryCard} card`} onClick={onClick}>
       {/* HEADER */}
       <div className={styles.header}>
-        <h3>{data.city}</h3>
+        <h3>{city}</h3>
         <span className={styles.total}>
           Today Planned: <strong>{total}</strong>
         </span>
@@ -45,9 +46,9 @@ const CitySummaryCard = ({ data, onClick }) => {
       </div>
 
       {/* ISSUES */}
-      {data.transportIssues > 0 && (
+      {transportIssues > 0 && (
         <div className={styles.issues}>
-          ⚠️ Transportation Issues ({data.transportIssues})
+          ⚠️ Transportation Issues ({transportIssues})
         </div>
       )}
     </div>

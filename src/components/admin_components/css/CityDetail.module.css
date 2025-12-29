@@ -1,0 +1,45 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+  font-size: 14px;
+}
+
+th, td {
+  border: 1px solid #e5e7eb;
+  padding: 8px 10px;
+  text-align: left;
+}
+
+th {
+  background: #f9fafb;
+}
+
+.completed {
+  color: cadetblue;
+  font-weight: 600;
+}
+
+.pending {
+  color: #f44336;
+  font-weight: 600;
+}
+
+.issue {
+  color: #d32f2f;
+  font-weight: 500;
+}
+.backBtn {
+     background: #3278da ;
+    color: #fff;
+    border: none;
+    padding: 4px 8px;
+    cursor: pointer;
+        font-size: 12px;
+    border-radius: 5px;
+    font-weight: 700;
+}
+
+.backBtn:hover {
+      background: #000 ;
+}
