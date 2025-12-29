@@ -1,7 +1,78 @@
-
 .citySummaryCard {
   padding: 18px;
-  border-radius: 12px;
+  border-radius: 14px;
   cursor: pointer;
+  transition: transform 0.15s ease;
 }
 
+.citySummaryCard:hover {
+  transform: translateY(-2px);
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.total {
+  font-size: 13px;
+  color: #555;
+}
+
+/* PROGRESS BAR */
+.progressBar {
+  margin: 14px 0;
+  height: 10px;
+  background: #eee;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+}
+
+.completed {
+  background: cadetblue;
+  height: 100%;
+}
+
+.pending {
+  background: #f44336;
+  height: 100%;
+}
+
+/* LEGEND */
+.legend {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.completedDot {
+  background: cadetblue;
+}
+
+.pendingDot {
+  background: #f44336;
+}
+
+/* ISSUES */
+.issues {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #d32f2f;
+  font-weight: 500;
+}

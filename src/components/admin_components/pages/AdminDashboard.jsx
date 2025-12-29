@@ -9,7 +9,7 @@ const AdminDashboard = () => {
 
   return (
     <>
-      <h1>Today’s Dashboard</h1>
+      <h1>Today’s Plan</h1>
 
 
       <div className={styles.citySummaryGrid}>
