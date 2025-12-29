@@ -1,6 +1,8 @@
+import styles from "../css/CitySummaryCard.module.css";
+
 const CitySummaryCard = ({ data, onClick }) => {
   return (
-    <div className="city-summary-card" onClick={onClick}>
+    <div className={`${styles.citySummaryCard} card`} onClick={onClick}>
       <h3>{data.city}</h3>
 
       <p>Total trailers: <strong>{data.total}</strong></p>

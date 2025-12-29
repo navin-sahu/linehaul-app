@@ -16,8 +16,8 @@ const AdminSidebar = () => {
           Linehaul Plan
         </NavLink>
 
-        <NavLink to="/admin/route-planner" className={({ isActive }) => isActive ? "active" : ""}>
-          Route Planner
+        <NavLink to="/admin/driver-details" className={({ isActive }) => isActive ? "active" : ""}>
+          Driver Details
         </NavLink>
 
         <NavLink to="/admin/analytics" className={({ isActive }) => isActive ? "active" : ""}>

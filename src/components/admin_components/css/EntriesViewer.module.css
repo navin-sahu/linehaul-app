@@ -1,0 +1,116 @@
+.viewerWrapper{
+    position: relative;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.viewerWrapper .pdfBtn {
+  background: #3278da !important;
+  color: #fff !important;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+.viewerWrapper .pdfBtn:hover{
+    background: #000 !important;
+}
+
+.viewerWrapper .exportBtn {
+  margin-top: 12px;
+  padding: 8px 16px;
+  background: #de9322;
+  color: #fff;
+  border: none;
+}
+.viewerWrapper .exportBtn:hover{
+    background: #000;
+}
+.viewerWrapper input,
+.viewerWrapper select {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #929292;
+  font-size: 13px;
+  margin-bottom: 8px;
+  box-sizing: border-box;
+}
+.viewerWrapper input:focus,
+.viewerWrapper select:focus {
+  outline: none;
+  border-color: #391d38;
+}
+
+.entryTable {
+  width: 100%;
+  overflow-x: auto;
+}
+.entryTable table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  font-size: 12px;
+}
+
+.entryTable th,.entryTable 
+td {
+  border: 1px solid #eef2fb;
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.entryTable th {
+  background: #f7fbff;
+  font-weight: 700;
+  color: #123;
+}
+.entryTable .actionTd{
+  min-width: 100px;
+}
+
+.entryTable tbody tr:hover {
+  background: #fafcff;
+}
+.viewerWrapper button {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 0;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+}
+.entryTable td button {
+  padding: 5px 8px;
+  font-size: 12px;
+  border-radius: 5px;
+}
+
+.viewerTable th select,
+.viewerTable th input {
+    width: 100%;
+    margin-top: 4px;
+    font-size: 11px;
+    padding: 4px;
+    max-width: 90px;
+    display: block;
+}
+
+.noResults {
+  text-align: center;
+  color: #2e4045;
+  font-size: 13px;
+  padding: 12px;
+}
+

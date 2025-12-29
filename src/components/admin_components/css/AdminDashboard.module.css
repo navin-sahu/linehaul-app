@@ -1,0 +1,27 @@
+.dashboardGrid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .dashboardGrid {
+    grid-template-columns: 1fr;
+  }
+
+}
+.citySummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.citySummaryCard {
+  background: #fff;
+  padding: 18px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+
