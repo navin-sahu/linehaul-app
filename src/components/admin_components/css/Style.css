@@ -5,7 +5,7 @@
 }
 
 .admin-sidebar {
-    width: 240px;
+    width: 140px;
     background: #391d38;
     color: #fff;
     padding: 20px;
@@ -36,6 +36,8 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .admin-header {

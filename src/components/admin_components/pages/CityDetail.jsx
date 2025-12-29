@@ -49,8 +49,8 @@ const CityDetail = () => {
       >
         ← Back
       </button>
-
-      <h2>{cityName} – Today Details</h2>
+<div className="card mt-5">
+      <h3>{cityName} – Today Details</h3>
 
       <table className={styles.table}>
         <thead>
@@ -87,6 +87,7 @@ const CityDetail = () => {
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 };

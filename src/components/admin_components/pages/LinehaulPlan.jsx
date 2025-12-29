@@ -108,7 +108,7 @@ const LinehaulPlan = () => {
 
         <div className={styles.grid} >
           {/* LEFT */}
-          <div className="card">
+          <div className={`${styles.widthSmall} card`}>
             <h3>Areas</h3>
 
             <div className={styles.addAreaRow}>
@@ -156,7 +156,7 @@ const LinehaulPlan = () => {
 
 
           {/* RIGHT */}
-          <div className="card">
+          <div className={`${styles.flexGrowOne} card`}>
             <h3>Entries — {selectedArea || "No area selected"}</h3>
             <div className={styles.entryForm}>
 

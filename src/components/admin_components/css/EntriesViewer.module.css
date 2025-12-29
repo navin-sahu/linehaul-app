@@ -16,7 +16,7 @@
 }
 
 .viewerWrapper .pdfBtn {
-  background: #3278da !important;
+  background: #f44336 !important;
   color: #fff !important;
   border: none;
   padding: 4px 8px;
@@ -29,7 +29,7 @@
 .viewerWrapper .exportBtn {
   margin-top: 12px;
   padding: 8px 16px;
-  background: #de9322;
+  background: #f44336;
   color: #fff;
   border: none;
 }
@@ -69,6 +69,7 @@ td {
   padding: 8px 10px;
   text-align: left;
   vertical-align: top;
+  background-color: cadetblue;
 }
 
 .entryTable th {
