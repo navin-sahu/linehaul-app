@@ -6,13 +6,18 @@
 }
 
 th, td {
-  border: 1px solid #e5e7eb;
+  border: 1px solid #eef2fb;
   padding: 8px 10px;
   text-align: left;
+  vertical-align: top;
+  background-color: #f4f4f4;
 }
 
 th {
-  background: #f9fafb;
+  background: #f7fbff;
+  font-weight: 700;
+  color: #123;
+  font-size: 14px;
 }
 
 .completed {

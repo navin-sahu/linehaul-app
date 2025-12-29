@@ -11,6 +11,7 @@ import AdminLayout from "./components/admin_components/layout/AdminLayout";
 import AdminDashboard from "./components/admin_components/pages/AdminDashboard";
 import CityDetail from "./components/admin_components/pages/CityDetail";
 import LinehaulPlan from "./components/admin_components/pages/LinehaulPlan";
+import DriverDetails from "./components/admin_components/pages/DriverDetails";
 import DriverDashboard from "./components/driver_components/pages/DriverDashboard";
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
         <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="linehaul-plan" element={<LinehaulPlan />} />
+        <Route path="driver-details" element={<DriverDetails />} />
         <Route path="city/:cityName" element={<CityDetail />} />
       </Route>
 

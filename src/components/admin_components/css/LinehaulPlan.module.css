@@ -161,6 +161,7 @@ td {
   background: #f7fbff;
   font-weight: 700;
   color: #123;
+  font-size: 14px;
 }
 .entryTable .actionTd{
   min-width: 80px;

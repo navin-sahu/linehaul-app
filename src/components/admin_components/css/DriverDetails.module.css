@@ -1,0 +1,154 @@
+
+.driverWrapper {
+  width: 100%;
+}
+
+.driverWrapper th input,
+.driverWrapper th select {
+  border-radius: 6px;
+  border: 1px solid #929292;
+  box-sizing: border-box;
+  width: 100%;
+    margin-top: 4px;
+    font-size: 11px;
+    padding: 4px;
+    max-width: 90px;
+    display: block;
+}
+
+.driverWrapper th input:focus {
+  outline: none;
+  border-color: #391d38;
+}
+
+.entryTable {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.entryTable table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  font-size: 12px;
+}
+
+.entryTable th,
+.entryTable td {
+  border: 1px solid #eef2fb;
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.entryTable th {
+ background: #f7fbff;
+    font-weight: 700;
+    color: #123;
+    font-size: 14px;
+}
+
+.entryTable tbody tr:hover {
+  background: #fafcff;
+}
+
+.actionTd {
+  min-width: 120px;
+  white-space: nowrap;
+}
+
+.entryTable td button {
+  padding: 5px 8px;
+  font-size: 12px;
+  border-radius: 5px;
+  border: 0;
+  cursor: pointer;
+  margin-right: 6px;
+}
+
+.entryTable td button:first-child {
+  background: #e5efff;
+  color: #1f5fbf;
+}
+
+.entryTable td button:nth-child(2) {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.entryTable td button:last-child {
+  background: #f44336;
+  color: #fff;
+}
+
+.primaryBtn {
+  margin-top: 12px;
+  background: #391d38;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 0;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.primaryBtn:hover {
+  background: #221022;
+}
+
+.noResults {
+  text-align: center;
+  color: #2e4045;
+  font-size: 13px;
+  padding: 12px;
+}
+
+
+.iconBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #eef3ff;
+  color: #1f5fbf;
+  border: 0;
+  border-radius: 6px;
+  padding: 6px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.iconBtn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.iconBtn:hover {
+  background: #dbe8ff;
+}
+
+.iconBtn:active {
+  transform: scale(0.95);
+}
+
+.iconBtn.danger {
+  background: #ffe4e4;
+  color: #c81e1e;
+}
+
+.iconBtn.danger:hover {
+  background: #ffcfcf;
+}
+.iconBtn[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  background: #111;
+  color: #fff;
+  font-size: 11px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  transform: translateY(-28px);
+}
