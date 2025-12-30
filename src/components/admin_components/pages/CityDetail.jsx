@@ -76,7 +76,7 @@ const CityDetail = () => {
               </td>
               <td>
                 {row.transportIssue ? (
-                  <span className={styles.issue}>
+                  <span className={styles.issuesDetail}>
                     ⚠️ {row.issueNote || "Reported"}
                   </span>
                 ) : (

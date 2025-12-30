@@ -10,7 +10,7 @@ th, td {
   padding: 8px 10px;
   text-align: left;
   vertical-align: top;
-  background-color: #fff;
+  background-color: cadetblue;
 }
 
 th {
@@ -21,18 +21,25 @@ th {
 }
 
 .completed {
-  color: cadetblue;
-  font-weight: 600;
+    color: #fff;
+    font-weight: 700;
+    background-color: green;
 }
 
 .pending {
-  color: #f44336;
-  font-weight: 600;
+     color: #fff;
+    font-weight: 700;
+    background-color: grey;
 }
 
 .issue {
-  color: #d32f2f;
-  font-weight: 500;
+      color: #fff;
+    background-color: #d32f2f;
+  font-weight: 700;
+}
+.issuesDetail {
+      color: #fff;
+  font-weight: 700;
 }
 .backBtn {
      background: #3278da ;
