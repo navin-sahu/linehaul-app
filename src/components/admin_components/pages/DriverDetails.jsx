@@ -227,7 +227,7 @@ const DriverDetails = () => {
                             Cancel
                         </button>
                         <button
-                            className={`${styles.primaryBtn} ${styles.mtZero}`}
+                            className={`${styles.primaryBtn}  mt-0`}
                             onClick={submitLogin}
                         >
                             Next
@@ -275,7 +275,7 @@ const DriverDetails = () => {
                             Cancel
                         </button>
                         <button
-                            className={`${styles.primaryBtn} ${styles.mtZero}`}
+                            className={`${styles.primaryBtn}  mt-0`}
                             onClick={saveDriver}
                         >
                             Save
@@ -334,7 +334,7 @@ const DriverDetails = () => {
                             Cancel
                         </button>
                         <button
-                            className={`${styles.primaryBtn} ${styles.mtZero}`}
+                            className={`${styles.primaryBtn} mt-0`}
                             onClick={updatePassword}
                         >
                             Update
