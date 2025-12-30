@@ -7,17 +7,202 @@ import { FiEdit2, FiTrash2, FiPlus, FiLock } from "react-icons/fi";
 /* ---------------- MOCK DATA ---------------- */
 
 const initialDrivers = [
-    {
-        id: 1,
-        username: "driver_wlg_01",
-        name: "John Smith",
-        email: "john@email.com",
-        phone: "0212345678",
-        license: "NZDL-456789",
-        status: "Active",
-        documents: {}
-    }
+  {
+    id: 1,
+    username: "driver_wlg_01",
+    name: "John Smith",
+    email: "john.smith@linehaul.co.nz",
+    phone: "0212345678",
+    license: "NZDL-456789",
+    status: "Active",
+    documents: {}
+  },
+
+  {
+    id: 2,
+    username: "motu_taupo",
+    name: "Motu",
+    email: "motu@linehaul.co.nz",
+    phone: "0214567890",
+    license: "NZDL-102345",
+    status: "Active",
+    documents: {}
+  },
+  {
+    id: 3,
+    username: "frank_taupo",
+    name: "Frank",
+    email: "frank@linehaul.co.nz",
+    phone: "0215678901",
+    license: "NZDL-203456",
+    status: "Active",
+    documents: {}
+  },
+  {
+    id: 4,
+    username: "aman_taupo",
+    name: "Aman",
+    email: "aman@linehaul.co.nz",
+    phone: "0216789012",
+    license: "NZDL-304567",
+    status: "Active",
+    documents: {}
+  },
+  {
+    id: 5,
+    username: "ravi_taupo",
+    name: "Ravi",
+    email: "ravi@linehaul.co.nz",
+    phone: "0217890123",
+    license: "NZDL-405678",
+    status: "Active",
+    documents: {}
+  },
+
+  {
+    id: 6,
+    username: "cas_pn",
+    name: "CAS",
+    email: "cas@linehaul.co.nz",
+    phone: "0218901234",
+    license: "NZDL-506789",
+    status: "Active",
+    documents: {}
+  },
+  {
+    id: 7,
+    username: "simon_pn",
+    name: "Simon",
+    email: "simon@linehaul.co.nz",
+    phone: "0219012345",
+    license: "NZDL-607890",
+    status: "Active",
+    documents: {}
+  },
+  {
+    id: 8,
+    username: "luke_pn",
+    name: "Luke",
+    email: "luke@linehaul.co.nz",
+    phone: "0210123456",
+    license: "NZDL-708901",
+    status: "Active",
+    documents: {}
+  },
+
+  {
+    id: 9,
+    username: "arshpreet_wlg",
+    name: "Arshpreet",
+    email: "arshpreet@linehaul.co.nz",
+    phone: "0211234567",
+    license: "NZDL-809012",
+    status: "Active",
+    documents: {}
+  },
+  {
+    id: 10,
+    username: "kartic_wlg",
+    name: "Kartic",
+    email: "kartic@linehaul.co.nz",
+    phone: "0212345679",
+    license: "NZDL-910123",
+    status: "Active",
+    documents: {}
+  },
+  {
+    id: 11,
+    username: "jaspreet_wlg",
+    name: "Jaspreet",
+    email: "jaspreet@linehaul.co.nz",
+    phone: "0213456789",
+    license: "NZDL-112233",
+    status: "Active",
+    documents: {}
+  },
+  {
+    id: 12,
+    username: "nikhil_wlg",
+    name: "Nikhil",
+    email: "nikhil@linehaul.co.nz",
+    phone: "0214567891",
+    license: "NZDL-223344",
+    status: "Active",
+    documents: {}
+  },
+  {
+    id: 13,
+    username: "ben_wlg",
+    name: "Ben",
+    email: "ben@linehaul.co.nz",
+    phone: "0215678912",
+    license: "NZDL-334455",
+    status: "Active",
+    documents: {}
+  },
+
+  {
+    id: 14,
+    username: "keith_ctz",
+    name: "Keith",
+    email: "keith@linehaul.co.nz",
+    phone: "0216789123",
+    license: "NZDL-445566",
+    status: "Active",
+    documents: {}
+  },
+  {
+    id: 15,
+    username: "travis_ctz",
+    name: "Travis",
+    email: "travis@linehaul.co.nz",
+    phone: "0217891234",
+    license: "NZDL-556677",
+    status: "Active",
+    documents: {}
+  },
+  {
+    id: 16,
+    username: "jordan_ctz",
+    name: "Jordan",
+    email: "jordan@linehaul.co.nz",
+    phone: "0218912345",
+    license: "NZDL-667788",
+    status: "Active",
+    documents: {}
+  },
+  {
+    id: 17,
+    username: "paul_ctz",
+    name: "Paul",
+    email: "paul@linehaul.co.nz",
+    phone: "0219123456",
+    license: "NZDL-778899",
+    status: "Active",
+    documents: {}
+  },
+  {
+    id: 18,
+    username: "aaron_ctz",
+    name: "Aaron",
+    email: "aaron@linehaul.co.nz",
+    phone: "0210234567",
+    license: "NZDL-889900",
+    status: "Active",
+    documents: {}
+  },
+  {
+    id: 19,
+    username: "sam_ctz",
+    name: "Sam",
+    email: "sam@linehaul.co.nz",
+    phone: "0211345678",
+    license: "NZDL-990011",
+    status: "Active",
+    documents: {}
+  }
 ];
+
 
 const emptyDriver = {
     name: "",
