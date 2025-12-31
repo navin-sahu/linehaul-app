@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import CitySummaryCard from "../widgets/CitySummaryCard";
 import { getCitySummary } from "../widgets/GetCitySummary";
 import DriverUpdatesData from "../data/DriverUpdatesData"
-import LinehaulPlanData from "../data/LinehaulPlanData";;
+import LinehaulPlanData from "../data/LinehaulPlanData";
 import EntriesViewer from "../pages/EntriesViewer";
 import styles from "../css/AdminDashboard.module.css";
 

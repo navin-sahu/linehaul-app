@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { adminCredentials } from "../assets/dummyAuth";
+// import { adminCredentials } from "../assets/dummyAuth";
+import { authAPI } from "@/api";
 import "./css/Welcome.css";
 
 const AdminLogin = () => {
@@ -9,20 +10,19 @@ const AdminLogin = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await authAPI.login({ username, password });
 
-  if (
-    username === adminCredentials.username &&
-    password === adminCredentials.password
-  ) {
-    sessionStorage.setItem("user", "admin");
-navigate("/admin/dashboard", { replace: true });
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
-  } else {
-    setError("Invalid admin credentials");
-  }
-};
+      navigate("/admin/dashboard", { replace: true });
+    } catch (err) {
+      setError(err.response?.data?.message || "Login failed");
+    }
+  };
 
 
   return (

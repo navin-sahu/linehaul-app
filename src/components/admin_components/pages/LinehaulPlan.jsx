@@ -3,8 +3,8 @@ import { FiEdit2, FiTrash2, FiPlus } from "react-icons/fi";
 import LinehaulPlanData from "../data/LinehaulPlanData";
 import styles from "../css/LinehaulPlan.module.css";
 import EntriesViewer from "./EntriesViewer";
-
-
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { areaAPI, entryAPI } from "@/api";
 
 const emptyEntry = {
   trucks: "",
@@ -15,7 +15,7 @@ const emptyEntry = {
   boats: "",
   load: "",
   instructions: "",
-  planDate: ""
+  planDate: "",
 };
 
 const LinehaulPlan = () => {
@@ -23,30 +23,66 @@ const LinehaulPlan = () => {
   const [selectedArea, setSelectedArea] = useState(null);
   const [form, setForm] = useState(emptyEntry);
 
+  const { data: areas } = useQuery({
+    queryKey: ["linehaulPlan"],
+    queryFn: areaAPI.getAreas,
+  });
+
+  // fetch based on selected area
+  const { data: entries = [], isLoading } = useQuery({
+    queryKey: ["entries", selectedArea],
+    queryFn: () => entryAPI.getEntriesByArea( selectedArea._id ),
+    enabled: !!selectedArea?._id,
+    select: (res) => res.data,
+  });
 
 
+  const queryClient = useQueryClient();
+
+  const addAreaMutation = useMutation({
+    mutationFn: areaAPI.createArea,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["areas"]); // 🔥 auto refresh
+      setNewArea("");
+    },
+  });
+
+  const deleteAreaMutation = useMutation({
+    mutationFn: areaAPI.deleteArea,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["areas"]);
+    },
+  });
+
+  //add a single entry mutation
+  const addEntryMutation = useMutation({
+    mutationFn: ({ areaId, data }) => entryAPI.createEntry(areaId, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["entries", selectedArea]);
+    },
+  });
+
+  // delete a single entry mutation
+  const deleteEntryMutation = useMutation({
+    mutationFn: (entryId) => entryAPI.deleteEntry(entryId),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["entries", selectedArea]);
+    },
+  });
+
+ 
 
   /* ---------------- AREAS ---------------- */
   const [newArea, setNewArea] = useState("");
   const addArea = (name) => {
     if (!name.trim()) return;
-
-    setAppData((prev) => ({
-      ...prev,
-      areas: [...prev.areas, { name, entries: [] }],
-    }));
-
-    setNewArea("");
+    addAreaMutation.mutate({ name });
   };
 
-
-  const deleteArea = (name) => {
-    if (!window.confirm("Delete area and all entries?")) return;
-    setAppData({
-      ...appData,
-      areas: appData.areas.filter(a => a.name !== name)
-    });
-    setSelectedArea(null);
+  const deleteArea = (areaId) => {
+    // if (!window.confirm("Delete this area?")) return;
+    console.log("Deleting area with ID:", areaId);
+    deleteAreaMutation.mutate(areaId);
   };
 
   const fields = [
@@ -54,30 +90,35 @@ const LinehaulPlan = () => {
     { name: "regos", label: "REGOS", type: "text" },
     { name: "drivers", label: "DRIVERS", type: "text" },
     { name: "trailers", label: "TRAILERS", type: "text" },
-    { name: "start", label: "START", type: "time" },   // ✅ time
+    { name: "start", label: "START", type: "time" }, // ✅ time
     { name: "boats", label: "BOATS", type: "text" },
     { name: "load", label: "LOAD", type: "text" },
-    { name: "instructions", label: "INSTRUCTIONS", type: "text" }
+    { name: "instructions", label: "INSTRUCTIONS", type: "text" },
   ];
 
   const addEntry = () => {
     if (!selectedArea) return alert("Select an area first");
     if (!form.planDate) return alert("Please select plan date");
 
-    setAppData({
-      ...appData,
-      areas: appData.areas.map(a =>
-        a.name === selectedArea
-          ? { ...a, entries: [...a.entries, form] }
-          : a
-      )
-    });
+    addEntryMutation.mutate({ areaId: selectedArea._id, data: {
+      entry:{
+      truck: form.trucks,
+      rego: form.regos,
+      driver: form.drivers,
+      trailer: form.trailers,
+      start_time: form.start,
+      boat: form.boats,
+      load: form.load,
+      instruction: form.instructions,
+      plan_date: form.planDate,
+    }
+    } });
 
     setForm(emptyEntry);
   };
 
   const editEntry = (idx) => {
-    const area = appData.areas.find(a => a.name === selectedArea);
+    const area = appData.areas.find((a) => a.name === selectedArea);
     setForm(area.entries[idx]);
     removeEntry(idx, false);
   };
@@ -87,26 +128,24 @@ const LinehaulPlan = () => {
 
     setAppData({
       ...appData,
-      areas: appData.areas.map(a =>
+      areas: appData.areas.map((a) =>
         a.name === selectedArea
           ? { ...a, entries: a.entries.filter((_, i) => i !== idx) }
           : a
-      )
+      ),
     });
   };
 
-
+  
 
   /* ---------------- UI ---------------- */
 
   return (
     <>
       <div className={styles.linhaulPlanWrapper}>
-
-
         <h1>Linehaul Plan</h1>
 
-        <div className={styles.grid} >
+        <div className={styles.grid}>
           {/* LEFT */}
           <div className={`${styles.widthSmall} card`}>
             <h3>Areas</h3>
@@ -130,22 +169,24 @@ const LinehaulPlan = () => {
               </button>
             </div>
             <div className={styles.areasList}>
-              {appData.areas.map((a) => (
+              {areas?.data?.map((a) => (
                 <div
-                  key={a.name}
-                  className={`${styles.areaItem} ${selectedArea === a.name ? styles.active : ""
-                    }`}
-                  onClick={() => setSelectedArea(a.name)}
+                  key={a._id}
+                  className={`${styles.areaItem} ${
+                    selectedArea === a.name ? styles.active : ""
+                  }`}
+                  onClick={() => setSelectedArea({name: a.name, _id: a._id})}
                 >
                   <span>{a.name}</span>
 
                   <button
                     className={`${styles.iconBtn} ${styles.danger}`}
                     onClick={(e) => {
-                      e.stopPropagation(); // prevent selecting area
-                      deleteArea(a.name);
+                      e.stopPropagation();
+                      deleteArea(a._id);
                     }}
                     title="Delete"
+                    type="button"
                   >
                     <FiTrash2 />
                   </button>
@@ -154,18 +195,15 @@ const LinehaulPlan = () => {
             </div>
           </div>
 
-
           {/* RIGHT */}
           <div className={`${styles.flexGrowOne} card`}>
-            <h3>Entries — {selectedArea || "No area selected"}</h3>
+            <h3>Entries — {selectedArea?.name || "No area selected"}</h3>
             <div className={styles.entryForm}>
-
               <input
                 type="date"
                 value={form.planDate}
-                onChange={e => setForm({ ...form, planDate: e.target.value })}
+                onChange={(e) => setForm({ ...form, planDate: e.target.value })}
               />
-
 
               {fields.map(({ name, label, type }) => (
                 <input
@@ -173,14 +211,14 @@ const LinehaulPlan = () => {
                   type={type}
                   placeholder={label}
                   value={form[name]}
-                  onChange={(e) =>
-                    setForm({ ...form, [name]: e.target.value })
-                  }
+                  onChange={(e) => setForm({ ...form, [name]: e.target.value })}
                 />
               ))}
             </div>
 
-            <button className={`mt-5 ${styles.primary}`} onClick={addEntry}>Add Entry</button>
+            <button className={`mt-5 ${styles.primary}`} onClick={addEntry}>
+              Add Entry
+            </button>
             {selectedArea && (
               <div className={styles.entryTable}>
                 <table>
@@ -200,26 +238,32 @@ const LinehaulPlan = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {appData.areas
-                      .find(a => a.name === selectedArea)
-                      .entries.map((e, i) => (
-                        <tr key={i}>
-                          <td>{selectedArea}</td>
-                          <td>{e.planDate}</td>
-                          <td>{e.trucks}</td>
-                          <td>{e.regos}</td>
-                          <td>{e.drivers}</td>
-                          <td>{e.trailers}</td>
-                          <td>{e.start}</td>
-                          <td>{e.boats}</td>
-                          <td>{e.load}</td>
-                          <td>{e.instructions}</td>
-                          <td className={styles.actionTd}>
-                            <button className={styles.iconBtn} onClick={() => editEntry(i)} title="Edit" ><FiEdit2 /></button>
-                            <button className={`${styles.iconBtn} ${styles.danger}`} onClick={() => removeEntry(i)} title="Delete" ><FiTrash2 /></button>
-                          </td>
-                        </tr>
-                      ))}
+
+                    {!isLoading && entries?.map((e, i) => (
+                      <tr key={e?._id || i}>
+                        <td>{selectedArea.name}</td>
+                        <td>{e?.plan_date}</td>
+                        <td>{e?.truck}</td>
+                        <td>{e?.rego}</td>
+                        <td>{e?.driver}</td>
+                        <td>{e?.trailer}</td>
+                        <td>{e?.start_time}</td>
+                        <td>{e?.boat}</td>
+                        <td>{e?.load}</td>
+                        <td>{e?.instruction}</td>
+                        <td className={styles.actionTd}>
+                          <button className={styles.iconBtn} title="Edit">
+                            <FiEdit2 />
+                          </button>
+                          <button
+                            className={`${styles.iconBtn} ${styles.danger}`}
+                            title="Delete"
+                          >
+                            <FiTrash2 />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
@@ -228,7 +272,6 @@ const LinehaulPlan = () => {
         </div>
 
         <EntriesViewer />
-
       </div>
     </>
   );
