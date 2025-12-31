@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useReducer } from "react";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import styles from "../css/EntriesViewer.module.css";
@@ -6,18 +6,53 @@ import LinehaulPlanData from "../data/LinehaulPlanData";
 
 const EntriesViewer = () => {
     const viewerAppData = LinehaulPlanData;
-    const [filterArea, setFilterArea] = useState("ALL");
-    const [filterDate, setFilterDate] = useState("");
-    const [filterTruck, setFilterTruck] = useState("");
-    const [filterRegos, setFilterRegos] = useState("");
-    const [filterDrivers, setFilterDrivers] = useState("");
-    const [filterTrailers, setFilterTrailers] = useState("");
-    useEffect(() => {
-        setFilterTruck("");
-        setFilterRegos("");
-        setFilterDrivers("");
-        setFilterTrailers("");
-    }, [filterArea]);
+    const initialFilters = {
+  area: "ALL",
+  date: "",
+  truck: "",
+  regos: "",
+  drivers: "",
+  trailers: ""
+};
+
+function filterReducer(state, action) {
+  switch (action.type) {
+    case "SET_AREA":
+      return {
+        ...state,
+        area: action.payload,
+        truck: "",
+        regos: "",
+        drivers: "",
+        trailers: ""
+      };
+
+    case "SET_DATE":
+      return { ...state, date: action.payload };
+
+    case "SET_TRUCK":
+      return { ...state, truck: action.payload };
+
+    case "SET_REGOS":
+      return { ...state, regos: action.payload };
+
+    case "SET_DRIVERS":
+      return { ...state, drivers: action.payload };
+
+    case "SET_TRAILERS":
+      return { ...state, trailers: action.payload };
+
+    case "RESET_ALL":
+      return initialFilters;
+
+    default:
+      return state;
+  }
+}
+
+    const [filters, dispatch] = useReducer(filterReducer, initialFilters);
+
+
 
 
     const viewerRows = useMemo(() => {
@@ -30,23 +65,16 @@ const EntriesViewer = () => {
         });
 
         return rows.filter(r =>
-            (filterArea === "ALL" || r.area === filterArea) &&
-            (!filterDate || r.planDate === filterDate) &&
-            (r.trucks || "").toLowerCase().includes(filterTruck.toLowerCase()) &&
-            (r.regos || "").toLowerCase().includes(filterRegos.toLowerCase()) &&
-            (r.drivers || "").toLowerCase().includes(filterDrivers.toLowerCase()) &&
-            (r.trailers || "").toLowerCase().includes(filterTrailers.toLowerCase())
+            (filters.area === "ALL" || r.area === filters.area) &&
+(!filters.date || r.planDate === filters.date) &&
+(r.trucks || "").toLowerCase().includes(filters.truck.toLowerCase()) &&
+(r.regos || "").toLowerCase().includes(filters.regos.toLowerCase()) &&
+(r.drivers || "").toLowerCase().includes(filters.drivers.toLowerCase()) &&
+(r.trailers || "").toLowerCase().includes(filters.trailers.toLowerCase())
+
         );
 
-    }, [
-        viewerAppData,
-        filterArea,
-        filterDate,
-        filterTruck,
-        filterRegos,
-        filterDrivers,
-        filterTrailers
-    ]);
+    }, [viewerAppData, filters]);
 
     const COLORS = {
         primary: [30, 90, 160],
@@ -173,7 +201,8 @@ const EntriesViewer = () => {
 
         doc.setFontSize(11);
         doc.setTextColor(0);
-        doc.text(`Date: ${filterDate || "All"}`, pageWidth - 200, y);
+        doc.text(`Date: ${filters.date || "All"}`, pageWidth - 200, y);
+
         doc.text(
             `Generated: ${new Date().toLocaleString()}`,
             pageWidth - 200,
@@ -218,7 +247,7 @@ const EntriesViewer = () => {
 
             y += 30;
 
-            Object.entries(reasons).forEach(([reason, rows]) => {
+            Object.entries(reasons).forEach(([, rows]) => {
                 doc.setFontSize(10);
                 doc.setTextColor(0);
 
@@ -289,59 +318,76 @@ const EntriesViewer = () => {
                                 <th>
                                     Area
                                     <select
-                                        value={filterArea}
-                                        onChange={e => setFilterArea(e.target.value)}
+                                        value={filters.area}
+                                       onChange={(e) =>
+    dispatch({ type: "SET_AREA", payload: e.target.value })
+  }
                                     >
-                                        <option value="ALL">All</option>
-                                        {viewerAppData.areas.map(a => (
-                                            <option key={a.name} value={a.name}>{a.name}</option>
-                                        ))}
+                                         <option value="ALL">All</option>
+  {LinehaulPlanData.areas.map(a => (
+    <option key={a.name} value={a.name}>
+      {a.name}
+    </option>
+  ))}
                                     </select>
                                 </th>
 
                                 <th>
                                     Date
                                     <input
-                                        type="date"
-                                        value={filterDate}
-                                        onChange={e => setFilterDate(e.target.value)}
-                                    />
+  type="date"
+  value={filters.date}
+  onChange={(e) =>
+    dispatch({ type: "SET_DATE", payload: e.target.value })
+  }
+/>
                                 </th>
 
                                 <th>
                                     Truck
-                                    <input
-                                        value={filterTruck}
-                                        onChange={e => setFilterTruck(e.target.value)}
-                                        placeholder="Search"
-                                    />
+                                   <input
+  value={filters.truck}
+  onChange={(e) =>
+    dispatch({ type: "SET_TRUCK", payload: e.target.value })
+  }
+  placeholder="Search"
+/>
                                 </th>
 
                                 <th>
                                     Regos
-                                    <input
-                                        value={filterRegos}
-                                        onChange={e => setFilterRegos(e.target.value)}
-                                        placeholder="Search"
-                                    />
+                                   <input
+  value={filters.regos}
+  onChange={(e) =>
+    dispatch({ type: "SET_REGOS", payload: e.target.value })
+  }
+  placeholder="Search"
+/>
+
                                 </th>
 
                                 <th>
                                     Drivers
                                     <input
-                                        value={filterDrivers}
-                                        onChange={e => setFilterDrivers(e.target.value)}
-                                        placeholder="Search"
-                                    />
+  value={filters.drivers}
+  onChange={(e) =>
+    dispatch({ type: "SET_DRIVERS", payload: e.target.value })
+  }
+  placeholder="Search"
+/>
+
                                 </th>
 
                                 <th>
                                     Trailers
-                                    <input
-                                        value={filterTrailers}
-                                        onChange={e => setFilterTrailers(e.target.value)}
-                                        placeholder="Search"
-                                    />
+                                   <input
+  value={filters.trailers}
+  onChange={(e) =>
+    dispatch({ type: "SET_TRAILERS", payload: e.target.value })
+  }
+  placeholder="Search"
+/>
+
                                 </th>
 
                                 <th>Time</th>
@@ -354,7 +400,7 @@ const EntriesViewer = () => {
 
                         <tbody>
                             {viewerRows.length === 0 ? (
-                                <tr><td colSpan="10">No results</td></tr>
+                                <tr><td colSpan="11">No results</td></tr>
                             ) : (
                                 viewerRows.map((r, i) => (
                                     <tr key={`${r.area}-${r.planDate}-${i}`}>

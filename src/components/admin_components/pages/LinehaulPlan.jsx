@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { FiEdit2, FiTrash2, FiPlus } from "react-icons/fi";
 import LinehaulPlanData from "../data/LinehaulPlanData";
 import styles from "../css/LinehaulPlan.module.css";
