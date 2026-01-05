@@ -59,6 +59,14 @@ background: #391d38;
   font-size: 12px;
   cursor: pointer;
 }
+.filterBar{
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+    margin-top: 10px;
+    align-items: center;
+    justify-content: flex-end;
+}
 .entryForm {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

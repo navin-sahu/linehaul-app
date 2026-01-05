@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../css/AdminHeader.module.css";
 
@@ -24,6 +24,17 @@ const AdminHeader = ({ onSearch }) => {
   const [search, setSearch] = useState("");
   const [showNotif, setShowNotif] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
+const adminRef = useRef(null);
+useEffect(() => {
+  const handleClickOutside = (e) => {
+    if (adminRef.current && !adminRef.current.contains(e.target)) {
+      setShowAdmin(false);
+    }
+  };
+
+  document.addEventListener("mousedown", handleClickOutside);
+  return () => document.removeEventListener("mousedown", handleClickOutside);
+}, []);
   const [notifications] = useState(mockNotifications);
 
   const unreadCount = notifications.length;
@@ -84,10 +95,10 @@ const AdminHeader = ({ onSearch }) => {
         </div>
 
         {/* Admin menu */}
-        <div className={styles.adminWrapper}>
+        <div ref={adminRef} className={styles.adminWrapper}>
           <button
             className={styles.adminBtn}
-            onClick={() => setShowAdmin(!showAdmin)}
+            onClick={() => setShowAdmin(prev => !prev)}
           >
             ADMIN
           </button>

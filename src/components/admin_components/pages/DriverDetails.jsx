@@ -352,15 +352,15 @@ const DriverDetails = () => {
                             <tr>
                                 <th>
                                     Name
-                                    <input value={filterName} onChange={e => setFilterName(e.target.value)} />
+                                    <input placeholder="Search" value={filterName} onChange={e => setFilterName(e.target.value)} />
                                 </th>
                                 <th>
                                     Phone
-                                    <input value={filterPhone} onChange={e => setFilterPhone(e.target.value)} />
+                                    <input placeholder="Search" value={filterPhone} onChange={e => setFilterPhone(e.target.value)} />
                                 </th>
                                 <th>
                                     Email
-                                    <input value={filterEmail} onChange={e => setFilterEmail(e.target.value)} />
+                                    <input placeholder="Search" value={filterEmail} onChange={e => setFilterEmail(e.target.value)} />
                                 </th>
                                 <th>License</th>
                                 <th>Status</th>

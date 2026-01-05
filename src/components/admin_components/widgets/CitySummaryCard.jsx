@@ -47,7 +47,7 @@ const CitySummaryCard = ({ data, onClick }) => {
 
       {/* ISSUES */}
       {transportIssues > 0 && (
-        <div className={styles.issues}>
+        <div className={styles.issuesDetail}>
           ⚠️ Transportation Issues ({transportIssues})
         </div>
       )}

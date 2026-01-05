@@ -1,7 +1,8 @@
 // utils/getCitySummary.js
 
 export const getCitySummary = (planData, driverUpdates, areaName) => {
-  const today = "2025-12-29"; // or new Date().toISOString().slice(0,10)
+  const today = new Date().toISOString().slice(0, 10);
+
 
   const area = planData.areas.find(a => a.name === areaName);
   if (!area) return null;

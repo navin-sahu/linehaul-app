@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { FiEdit2, FiTrash2, FiPlus } from "react-icons/fi";
 import LinehaulPlanData from "../data/LinehaulPlanData";
 import styles from "../css/LinehaulPlan.module.css";
@@ -7,6 +7,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { areaAPI, entryAPI } from "@/api";
 
 const emptyEntry = {
+  id: null,
   trucks: "",
   regos: "",
   drivers: "",
@@ -73,7 +74,9 @@ const LinehaulPlan = () => {
  
 
   /* ---------------- AREAS ---------------- */
+
   const [newArea, setNewArea] = useState("");
+
   const addArea = (name) => {
     if (!name.trim()) return;
     addAreaMutation.mutate({ name });
@@ -84,6 +87,8 @@ const LinehaulPlan = () => {
     console.log("Deleting area with ID:", areaId);
     deleteAreaMutation.mutate(areaId);
   };
+
+  /* ---------------- ENTRY FORM ---------------- */
 
   const fields = [
     { name: "trucks", label: "TRUCKS", type: "text" },
@@ -117,26 +122,41 @@ const LinehaulPlan = () => {
     setForm(emptyEntry);
   };
 
-  const editEntry = (idx) => {
-    const area = appData.areas.find((a) => a.name === selectedArea);
-    setForm(area.entries[idx]);
-    removeEntry(idx, false);
+  /* ---------------- EDIT / DELETE ---------------- */
+
+  const editEntry = (id) => {
+    const area = appData.areas.find(a => a.name === selectedArea);
+    const entry = area.entries.find(e => e.id === id);
+    if (!entry) return;
+
+    setForm(entry);
+    removeEntry(id, false);
   };
 
-  const removeEntry = (idx, confirm = true) => {
+  const removeEntry = (id, confirm = true) => {
     if (confirm && !window.confirm("Delete entry?")) return;
 
-    setAppData({
-      ...appData,
-      areas: appData.areas.map((a) =>
+    setAppData(prev => ({
+      ...prev,
+      areas: prev.areas.map(a =>
         a.name === selectedArea
-          ? { ...a, entries: a.entries.filter((_, i) => i !== idx) }
+          ? { ...a, entries: a.entries.filter(e => e.id !== id) }
           : a
-      ),
-    });
+      )
+    }));
   };
 
-  
+  /* ---------------- FILTERED DATA ---------------- */
+
+  const selectedAreaData = selectedArea
+    ? appData.areas.find(a => a.name === selectedArea)
+    : null;
+
+  const filteredEntries = selectedAreaData
+    ? selectedAreaData.entries.filter(e =>
+        filterDate ? e.planDate === filterDate : true
+      )
+    : [];
 
   /* ---------------- UI ---------------- */
 
@@ -273,6 +293,7 @@ const LinehaulPlan = () => {
 
         <EntriesViewer />
       </div>
+
     </>
   );
 };
