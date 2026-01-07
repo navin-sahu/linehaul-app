@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 // import { adminCredentials } from "../assets/dummyAuth";
 import { authAPI } from "@/api";
 import "./css/Welcome.css";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -53,15 +53,7 @@ const AdminLogin = () => {
           {error && <p className="error">{error}</p>}
 
           <button className="btn btn-admin" type="submit" disabled={loading}>
-             {loading ? 
-            <AiOutlineLoading3Quarters 
-              style={{ 
-                animation: "spin 1s linear infinite",
-                display: "inline-block",
-                fontSize: "20px"
-              }} 
-            /> : "Login"}
-
+            {loading ? <LoadingSpinner size={20} /> : "Login"}
           </button>
         </form>
       </div>
