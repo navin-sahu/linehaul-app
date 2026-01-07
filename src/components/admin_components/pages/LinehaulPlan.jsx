@@ -3,8 +3,8 @@ import { FiEdit2, FiTrash2, FiPlus } from "react-icons/fi";
 import LinehaulPlanData from "../data/LinehaulPlanData";
 import styles from "../css/LinehaulPlan.module.css";
 import EntriesViewer from "./EntriesViewer";
-
-/* ---------------- CONSTANTS ---------------- */
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { areaAPI, entryAPI } from "@/api";
 
 const emptyEntry = {
   id: null,
@@ -16,14 +16,62 @@ const emptyEntry = {
   boats: "",
   load: "",
   instructions: "",
-  planDate: ""
+  planDate: "",
 };
 
 const LinehaulPlan = () => {
   const [appData, setAppData] = useState(LinehaulPlanData);
   const [selectedArea, setSelectedArea] = useState(null);
   const [form, setForm] = useState(emptyEntry);
-  const [filterDate, setFilterDate] = useState("");
+
+  const { data: areas } = useQuery({
+    queryKey: ["linehaulPlan"],
+    queryFn: areaAPI.getAreas,
+  });
+
+  // fetch based on selected area
+  const { data: entries = [], isLoading } = useQuery({
+    queryKey: ["entries", selectedArea],
+    queryFn: () => entryAPI.getEntriesByArea( selectedArea._id ),
+    enabled: !!selectedArea?._id,
+    select: (res) => res.data,
+  });
+
+
+  const queryClient = useQueryClient();
+
+  const addAreaMutation = useMutation({
+    mutationFn: areaAPI.createArea,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["areas"]); // 🔥 auto refresh
+      setNewArea("");
+    },
+  });
+
+  const deleteAreaMutation = useMutation({
+    mutationFn: areaAPI.deleteArea,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["areas"]);
+    },
+  });
+
+  //add a single entry mutation
+  const addEntryMutation = useMutation({
+    mutationFn: ({ areaId, data }) => entryAPI.createEntry(areaId, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["entries", selectedArea]);
+    },
+  });
+
+  // delete a single entry mutation
+  const deleteEntryMutation = useMutation({
+    mutationFn: (entryId) => entryAPI.deleteEntry(entryId),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["entries", selectedArea]);
+    },
+  });
+
+ 
 
   /* ---------------- AREAS ---------------- */
 
@@ -31,24 +79,13 @@ const LinehaulPlan = () => {
 
   const addArea = (name) => {
     if (!name.trim()) return;
-
-    setAppData(prev => ({
-      ...prev,
-      areas: [...prev.areas, { name, entries: [] }]
-    }));
-
-    setNewArea("");
+    addAreaMutation.mutate({ name });
   };
 
-  const deleteArea = (name) => {
-    if (!window.confirm("Delete area and all entries?")) return;
-
-    setAppData(prev => ({
-      ...prev,
-      areas: prev.areas.filter(a => a.name !== name)
-    }));
-
-    setSelectedArea(null);
+  const deleteArea = (areaId) => {
+    // if (!window.confirm("Delete this area?")) return;
+    console.log("Deleting area with ID:", areaId);
+    deleteAreaMutation.mutate(areaId);
   };
 
   /* ---------------- ENTRY FORM ---------------- */
@@ -58,29 +95,29 @@ const LinehaulPlan = () => {
     { name: "regos", label: "REGOS", type: "text" },
     { name: "drivers", label: "DRIVERS", type: "text" },
     { name: "trailers", label: "TRAILERS", type: "text" },
-    { name: "start", label: "START", type: "time" },
+    { name: "start", label: "START", type: "time" }, // ✅ time
     { name: "boats", label: "BOATS", type: "text" },
     { name: "load", label: "LOAD", type: "text" },
-    { name: "instructions", label: "INSTRUCTIONS", type: "text" }
+    { name: "instructions", label: "INSTRUCTIONS", type: "text" },
   ];
 
   const addEntry = () => {
     if (!selectedArea) return alert("Select an area first");
     if (!form.planDate) return alert("Please select plan date");
 
-    const entry = {
-      ...form,
-      id: form.id ?? Date.now()
-    };
-
-    setAppData(prev => ({
-      ...prev,
-      areas: prev.areas.map(a =>
-        a.name === selectedArea
-          ? { ...a, entries: [...a.entries, entry] }
-          : a
-      )
-    }));
+    addEntryMutation.mutate({ areaId: selectedArea._id, data: {
+      entry:{
+      truck: form.trucks,
+      rego: form.regos,
+      driver: form.drivers,
+      trailer: form.trailers,
+      start_time: form.start,
+      boat: form.boats,
+      load: form.load,
+      instruction: form.instructions,
+      plan_date: form.planDate,
+    }
+    } });
 
     setForm(emptyEntry);
   };
@@ -124,169 +161,140 @@ const LinehaulPlan = () => {
   /* ---------------- UI ---------------- */
 
   return (
-    <div className={styles.linhaulPlanWrapper}>
-      <h1>Linehaul Plan</h1>
+    <>
+      <div className={styles.linhaulPlanWrapper}>
+        <h1>Linehaul Plan</h1>
 
-      <div className={styles.grid}>
-        {/* LEFT */}
-        <div className={`${styles.widthSmall} card`}>
-          <h3>Areas</h3>
+        <div className={styles.grid}>
+          {/* LEFT */}
+          <div className={`${styles.widthSmall} card`}>
+            <h3>Areas</h3>
 
-          <div className={styles.addAreaRow}>
-            <input
-              placeholder="Add new area"
-              value={newArea}
-              onChange={(e) => setNewArea(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && addArea(newArea)}
-            />
-
-            <button
-              className={styles.addBtn}
-              onClick={() => addArea(newArea)}
-              title="Add Area"
-            >
-              <FiPlus />
-            </button>
-          </div>
-
-          <div className={styles.areasList}>
-            {appData.areas.map(a => (
-              <div
-                key={a.name}
-                className={`${styles.areaItem} ${
-                  selectedArea === a.name ? styles.active : ""
-                }`}
-                onClick={() => setSelectedArea(a.name)}
-              >
-                <span>{a.name}</span>
-
-                <button
-                  className={`${styles.iconBtn} ${styles.danger}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    deleteArea(a.name);
-                  }}
-                >
-                  <FiTrash2 />
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* RIGHT */}
-        <div className={`${styles.flexGrowOne} card`}>
-          <h3>Entries — {selectedArea || "No area selected"}</h3>
-
-          {/* ENTRY FORM */}
-          <div className={styles.entryForm}>
-            <input
-              type="date"
-              value={form.planDate}
-              onChange={(e) =>
-                setForm({ ...form, planDate: e.target.value })
-              }
-            />
-
-            {fields.map(f => (
+            <div className={styles.addAreaRow}>
               <input
-                key={f.name}
-                type={f.type}
-                placeholder={f.label}
-                value={form[f.name]}
-                onChange={(e) =>
-                  setForm({ ...form, [f.name]: e.target.value })
-                }
+                placeholder="Add new area"
+                value={newArea}
+                onChange={(e) => setNewArea(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") addArea(newArea);
+                }}
               />
-            ))}
+
+              <button
+                className={styles.addBtn}
+                onClick={() => addArea(newArea)}
+                title="Add Area"
+              >
+                <FiPlus />
+              </button>
+            </div>
+            <div className={styles.areasList}>
+              {areas?.data?.map((a) => (
+                <div
+                  key={a._id}
+                  className={`${styles.areaItem} ${
+                    selectedArea === a.name ? styles.active : ""
+                  }`}
+                  onClick={() => setSelectedArea({name: a.name, _id: a._id})}
+                >
+                  <span>{a.name}</span>
+
+                  <button
+                    className={`${styles.iconBtn} ${styles.danger}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      deleteArea(a._id);
+                    }}
+                    title="Delete"
+                    type="button"
+                  >
+                    <FiTrash2 />
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <button className={`mt-5 ${styles.primary}`} onClick={addEntry}>
-            {form.id ? "Update Entry" : "Add Entry"}
-          </button>
+          {/* RIGHT */}
+          <div className={`${styles.flexGrowOne} card`}>
+            <h3>Entries — {selectedArea?.name || "No area selected"}</h3>
+            <div className={styles.entryForm}>
+              <input
+                type="date"
+                value={form.planDate}
+                onChange={(e) => setForm({ ...form, planDate: e.target.value })}
+              />
 
-          {/* DATE FILTER */}
-          {selectedArea && (
-            <div className={styles.filterBar}>
-              <label>
-                Filter by date:
+              {fields.map(({ name, label, type }) => (
                 <input
-                  type="date"
-                  value={filterDate}
-                  onChange={(e) => setFilterDate(e.target.value)}
+                  key={name}
+                  type={type}
+                  placeholder={label}
+                  value={form[name]}
+                  onChange={(e) => setForm({ ...form, [name]: e.target.value })}
                 />
-              </label>
-
+              ))}
             </div>
-          )}
 
-          {/* TABLE */}
-          {selectedArea && (
-            <div className={styles.entryTable}>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Area</th>
-                    <th>Date</th>
-                    <th>Truck</th>
-                    <th>Regos</th>
-                    <th>Drivers</th>
-                    <th>Trailers</th>
-                    <th>Time</th>
-                    <th>Boats</th>
-                    <th>Load</th>
-                    <th>Instructions</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {filteredEntries.length === 0 && (
+            <button className={`mt-5 ${styles.primary}`} onClick={addEntry}>
+              Add Entry
+            </button>
+            {selectedArea && (
+              <div className={styles.entryTable}>
+                <table>
+                  <thead>
                     <tr>
-                      <td colSpan="11" style={{ textAlign: "center" }}>
-                        No entries for selected date
-                      </td>
+                      <th>Area</th>
+                      <th>Date</th>
+                      <th>Truck</th>
+                      <th>Regos</th>
+                      <th>Drivers</th>
+                      <th>Trailers</th>
+                      <th>Time</th>
+                      <th>Boats</th>
+                      <th>Load</th>
+                      <th>Instructions</th>
+                      <th>Actions</th>
                     </tr>
-                  )}
+                  </thead>
+                  <tbody>
 
-                  {filteredEntries.map(e => (
-                    <tr key={e.id}>
-                      <td>{selectedArea}</td>
-                      <td>{e.planDate}</td>
-                      <td>{e.trucks}</td>
-                      <td>{e.regos}</td>
-                      <td>{e.drivers}</td>
-                      <td>{e.trailers}</td>
-                      <td>{e.start}</td>
-                      <td>{e.boats}</td>
-                      <td>{e.load}</td>
-                      <td>{e.instructions}</td>
-                      <td className={styles.actionTd}>
-                        <button
-                          className={styles.iconBtn}
-                          onClick={() => editEntry(e.id)}
-                        >
-                          <FiEdit2 />
-                        </button>
-
-                        <button
-                          className={`${styles.iconBtn} ${styles.danger}`}
-                          onClick={() => removeEntry(e.id)}
-                        >
-                          <FiTrash2 />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+                    {!isLoading && entries?.map((e, i) => (
+                      <tr key={e?._id || i}>
+                        <td>{selectedArea.name}</td>
+                        <td>{e?.plan_date}</td>
+                        <td>{e?.truck}</td>
+                        <td>{e?.rego}</td>
+                        <td>{e?.driver}</td>
+                        <td>{e?.trailer}</td>
+                        <td>{e?.start_time}</td>
+                        <td>{e?.boat}</td>
+                        <td>{e?.load}</td>
+                        <td>{e?.instruction}</td>
+                        <td className={styles.actionTd}>
+                          <button className={styles.iconBtn} title="Edit">
+                            <FiEdit2 />
+                          </button>
+                          <button
+                            className={`${styles.iconBtn} ${styles.danger}`}
+                            title="Delete"
+                          >
+                            <FiTrash2 />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
         </div>
+
+        <EntriesViewer />
       </div>
 
-      <EntriesViewer />
-    </div>
+    </>
   );
 };
 
