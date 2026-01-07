@@ -2,7 +2,8 @@ export const LinehaulPlanData = {
   areas: [
 
     {
-      name: "Ex TAUPO",
+      _id: "6952325679fb640c07c2beaa",
+      name: "TAUPO",
       entries: [
         {
           trucks: "R1",
@@ -14,7 +15,7 @@ export const LinehaulPlanData = {
           instructions: "straight to boat",
           boats: "0815 BB",
           load: "South",
-          planDate: "2026-01-06"
+          planDate: "2026-01-07"
         },
         {
           trucks: "R2",
@@ -26,7 +27,7 @@ export const LinehaulPlanData = {
           instructions: "straight to boat",
           boats: "0815 BB",
           load: "CHC",
-          planDate: "2026-01-06"
+          planDate: "2026-01-07"
         },
         {
           trucks: "R3",
@@ -38,7 +39,7 @@ export const LinehaulPlanData = {
           instructions: "yard load",
           boats: "0930 BB",
           load: "WLG",
-          planDate: "2026-01-06"
+          planDate: "2026-01-07"
         },
         {
           trucks: "R4",
@@ -50,7 +51,7 @@ export const LinehaulPlanData = {
           instructions: "check loadplan",
           boats: "INTERISLANDER",
           load: "AKL",
-          planDate: "2026-01-06"
+          planDate: "2026-01-07"
         }
       ]
     },
@@ -68,7 +69,7 @@ export const LinehaulPlanData = {
           instructions: "ctz trailer return",
           boats: "N/A",
           load: "NSN/BLN",
-          planDate: "2026-01-06"
+          planDate: "2026-01-07"
         },
         {
           trucks: "PCL2",
@@ -80,7 +81,7 @@ export const LinehaulPlanData = {
           instructions: "yard drop",
           boats: "",
           load: "PNTH",
-          planDate: "2026-01-06"
+          planDate: "2026-01-07"
         },
         {
           trucks: "PCL3",
@@ -92,7 +93,7 @@ export const LinehaulPlanData = {
           instructions: "urgent freight",
           boats: "BLUEBRIDGE",
           load: "WLG",
-          planDate: "2026-01-06"
+          planDate: "2026-01-07"
         }
       ]
     },
@@ -101,7 +102,7 @@ export const LinehaulPlanData = {
       name: "FHL Ex WELLINGTON",
       entries: [
         {
-          trucks: "",
+          trucks: "FH",
           regos: "",
           drivers: "Arshpreet",
           name: "Arshpreet",
@@ -110,7 +111,7 @@ export const LinehaulPlanData = {
           instructions: "drop ILL p/up ILL",
           boats: "INTERISLANDER",
           load: "empty",
-          planDate: "2026-01-06"
+          planDate: "2026-01-07"
         },
         {
           trucks: "FHL25",
@@ -122,7 +123,7 @@ export const LinehaulPlanData = {
           instructions: "DROP ILL",
           boats: "INTERISLANDER",
           load: "AKL/UNI",
-          planDate: "2026-01-06"
+          planDate: "2026-01-07"
         },
         {
           trucks: "FHL30",
@@ -146,7 +147,7 @@ export const LinehaulPlanData = {
           instructions: "check seal",
           boats: "0815 BB",
           load: "CHC",
-          planDate: "2026-01-06"
+          planDate: "2026-01-07"
         },
         {
           trucks: "FHL31",
@@ -158,7 +159,7 @@ export const LinehaulPlanData = {
           instructions: "late sailing risk",
           boats: "INTERISLANDER",
           load: "DUN",
-          planDate: "2026-01-06"
+          planDate: "2026-01-07"
         },
         {
           trucks: "FHL33",
@@ -170,7 +171,7 @@ export const LinehaulPlanData = {
           instructions: "no loadplan yet",
           boats: "",
           load: "NSN",
-          planDate: "2026-01-06"
+          planDate: "2026-01-07"
         }
       ]
     },
@@ -188,7 +189,7 @@ export const LinehaulPlanData = {
           instructions: "",
           boats: "",
           load: "CTZ19-B",
-          planDate: "2026-01-06"
+          planDate: "2026-01-07"
         },
         {
           trucks: "ANR02",
@@ -200,7 +201,7 @@ export const LinehaulPlanData = {
           instructions: "DEPOT",
           boats: "BLUEBRIDGE",
           load: "CTZ19",
-          planDate: "2026-01-06"
+          planDate: "2026-01-07"
         },
         {
           trucks: "ANR05",
@@ -212,7 +213,7 @@ export const LinehaulPlanData = {
           instructions: "yard shuffle",
           boats: "",
           load: "LOCAL",
-          planDate: "2026-01-06"
+          planDate: "2026-01-07"
         },
         {
           trucks: "CTZ11",
@@ -224,7 +225,7 @@ export const LinehaulPlanData = {
           instructions: "priority load",
           boats: "INTERISLANDER",
           load: "CHC",
-          planDate: "2026-01-06"
+          planDate: "2026-01-07"
         },
         {
           trucks: "CTZ14",
@@ -236,7 +237,7 @@ export const LinehaulPlanData = {
           instructions: "await paperwork",
           boats: "",
           load: "AKL",
-          planDate: "2026-01-06"
+          planDate: "2026-01-07"
         },
         {
           trucks: "CTZ18",
@@ -248,7 +249,7 @@ export const LinehaulPlanData = {
           instructions: "late arrival",
           boats: "BLUEBRIDGE",
           load: "NSN",
-          planDate: "2026-01-06"
+          planDate: "2026-01-07"
         }
       ]
     }

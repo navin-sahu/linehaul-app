@@ -3,15 +3,18 @@ import { useNavigate } from "react-router-dom";
 // import { adminCredentials } from "../assets/dummyAuth";
 import { authAPI } from "@/api";
 import "./css/Welcome.css";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const res = await authAPI.login({ username, password });
 
@@ -20,6 +23,7 @@ const AdminLogin = () => {
 
       navigate("/admin/dashboard", { replace: true });
     } catch (err) {
+      setLoading(false);
       setError(err.response?.data?.message || "Login failed");
     }
   };
@@ -47,8 +51,16 @@ const AdminLogin = () => {
 
           {error && <p className="error">{error}</p>}
 
-          <button className="btn btn-admin" type="submit">
-            Login
+          <button className="btn btn-admin" type="submit" disabled={loading}>
+             {loading ? 
+            <AiOutlineLoading3Quarters 
+              style={{ 
+                animation: "spin 1s linear infinite",
+                display: "inline-block",
+                fontSize: "20px"
+              }} 
+            /> : "Login"}
+
           </button>
         </form>
       </div>

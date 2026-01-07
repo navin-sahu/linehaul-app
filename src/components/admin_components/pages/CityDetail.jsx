@@ -4,16 +4,16 @@ import DriverUpdatesData from "../data/DriverUpdatesData";
 import styles from "../css/CityDetail.module.css";
 
 const CityDetail = () => {
-  const { cityName } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();   // 👈 add this
   const today = new Date().toISOString().slice(0, 10);
 
   const area = LinehaulPlanData.areas.find(
-    a => a.name === cityName
+    a => a._id === id
   );
 
   if (!area) {
-    return <p>No data found for {cityName}</p>;
+    return <p>No data found for {id}</p>;
   }
 
   const plannedToday = area.entries.filter(
@@ -21,7 +21,7 @@ const CityDetail = () => {
   );
 
   const updatesToday = DriverUpdatesData.filter(
-    u => u.planDate === today && u.area === cityName
+    u => u.planDate === today && u.area === area.name
   );
 
   const rows = plannedToday.map(plan => {
@@ -50,7 +50,7 @@ const CityDetail = () => {
         ← Back
       </button>
 <div className="card mt-5">
-      <h3>{cityName} – Today Details</h3>
+      <h3>{area?.name} – Today Details</h3>
 
       <table className={styles.table}>
         <thead>

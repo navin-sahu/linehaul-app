@@ -1,8 +1,9 @@
 import { useMemo, useState } from "react";
 import styles from "../css/DriverDetails.module.css";
 import Modal from "../widgets/Modal";
-
 import { FiEdit2, FiTrash2, FiPlus, FiLock } from "react-icons/fi";
+import { authAPI } from "@/api";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 /* ---------------- MOCK DATA ---------------- */
 
@@ -208,15 +209,51 @@ const emptyDriver = {
     name: "",
     email: "",
     phone: "",
-    license: "",
+    license_number: "",
     status: "Active",
     documents: {}
 };
 
 const DriverDetails = () => {
     /* ---------------- STATE ---------------- */
+    // const [drivers, setDrivers] = useState(initialDrivers);
 
-    const [drivers, setDrivers] = useState(initialDrivers);
+    const queryClient = useQueryClient();
+
+    const { data: drivers } = useQuery({
+        queryKey: ["linehaulPlan-drivers"],
+        queryFn: authAPI.getDrivers,
+        initialData: []
+    });
+
+    const updateDriverMutation = useMutation({
+        mutationFn: ({driverId, updatedDriver}) => authAPI.updateDriver(driverId, updatedDriver),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["linehaulPlan-drivers"] });
+        }
+    });
+
+    const registerDriverMutation = useMutation({
+        mutationFn: (newDriver) => authAPI.registerDriver(newDriver),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["linehaulPlan-drivers"] });
+        }
+    });
+
+    const deleteDriverMutation = useMutation({
+        mutationFn: (driverId) => authAPI.deleteDriver(driverId),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["linehaulPlan-drivers"] });
+        }
+    });
+
+    const updateDriverPasswordMutation = useMutation({
+        mutationFn: ({driverId, newPassword}) => authAPI.updateDriverPassword(driverId, {newPassword: newPassword}),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["linehaulPlan-drivers"] });
+        }
+    });
+
 
     /* filters */
     const [filterName, setFilterName] = useState("");
@@ -232,7 +269,12 @@ const DriverDetails = () => {
     const [loginForm, setLoginForm] = useState({
         username: "",
         password: "",
-        confirm: ""
+        confirm: "",
+        name: "",
+        email: "",
+        phone: "",
+        license_number: "",
+        status: "Active",
     });
 
     const [driverForm, setDriverForm] = useState(emptyDriver);
@@ -243,13 +285,11 @@ const DriverDetails = () => {
 
     /* ---------------- FILTER ---------------- */
 
-    const filteredDrivers = useMemo(() => {
-        return drivers.filter(d =>
-            d.name.toLowerCase().includes(filterName.toLowerCase()) &&
-            d.phone.includes(filterPhone) &&
-            d.email.toLowerCase().includes(filterEmail.toLowerCase())
-        );
-    }, [drivers, filterName, filterPhone, filterEmail]);
+    const filteredDrivers = drivers?.data?.filter(d =>
+        d.name.toLowerCase().includes(filterName.toLowerCase()) &&
+        d.phone.toLowerCase().includes(filterPhone.toLowerCase()) &&
+        d.email.toLowerCase().includes(filterEmail.toLowerCase())
+    );
 
     /* ---------------- VALIDATION ---------------- */
 
@@ -290,29 +330,36 @@ const DriverDetails = () => {
         if (!validatePassword(loginForm.password, loginForm.confirm)) return;
 
         setShowLoginModal(false);
-        setShowDetailsModal(true);
-    };
+        // save to drivers list
+        registerDriverMutation.mutate({
+            username: loginForm.username,
+            password: loginForm.password,
+            name: loginForm.name,
+            email: loginForm.email,
+            phone: loginForm.phone,
+            license_number: loginForm.license_number,
+            status: "Active",
+        });
 
+        setDriverForm({
+            name: loginForm.name,
+            email: loginForm.email,
+            phone: loginForm.phone,
+            license_number: loginForm.license_number,
+            status: "Active",
+            documents: {}
+        }); 
+    };
     const saveDriver = () => {
         if (!driverForm.name || !driverForm.phone) {
             alert("Name & phone required");
             return;
         }
-
-        if (editingDriver) {
-            setDrivers(drivers.map(d =>
-                d.id === editingDriver.id ? { ...editingDriver, ...driverForm } : d
-            ));
-        } else {
-            setDrivers([
-                ...drivers,
-                {
-                    id: Date.now(),
-                    username: loginForm.username,
-                    ...driverForm
-                }
-            ]);
-        }
+        
+        updateDriverMutation.mutate({
+            driverId: editingDriver._id,
+            updatedDriver: driverForm
+        });
 
         setShowDetailsModal(false);
     };
@@ -325,17 +372,18 @@ const DriverDetails = () => {
 
     const deleteDriver = (id) => {
         if (window.confirm("Delete this driver?")) {
-            setDrivers(drivers.filter(d => d.id !== id));
+            deleteDriverMutation.mutate(id);
         }
     };
 
     const updatePassword = () => {
         if (!validatePassword(newPassword, confirmPassword)) return;
-
-        alert("Password updated");
+        updateDriverPasswordMutation.mutate({
+            driverId: editingDriver._id,
+            newPassword: newPassword
+        });
         setShowPasswordModal(false);
-        setNewPassword("");
-        setConfirmPassword("");
+        
     };
 
     /* ---------------- UI ---------------- */
@@ -369,22 +417,23 @@ const DriverDetails = () => {
                         </thead>
 
                         <tbody>
-                            {filteredDrivers.length === 0 ? (
+                            {filteredDrivers?.data?.length === 0 ? (
                                 <tr>
                                     <td colSpan="6" className={styles.noResults}>No results</td>
                                 </tr>
                             ) : (
-                                filteredDrivers.map(d => (
-                                    <tr key={d.id}>
+                                filteredDrivers?.map(d => (
+                                   
+                                    <tr key={d._id}>
                                         <td>{d.name}</td>
                                         <td>{d.phone}</td>
                                         <td>{d.email}</td>
-                                        <td>{d.license}</td>
-                                        <td>{d.status}</td>
+                                        <td>{d.license_number}</td>
+                                        <td>{d.is_active ? "Active" : "Inactive"}</td>
                                         <td className={styles.actionTd}>
                                             <button className={styles.iconBtn} onClick={() => editDriver(d)} title="Edit" ><FiEdit2 /></button>
                                             <button className={styles.iconBtn} onClick={() => setShowPasswordModal(true)} title="Change Password" ><FiLock /></button>
-                                            <button className={styles.iconBtn} onClick={() => deleteDriver(d.id)} title="Delete" ><FiTrash2 /></button>
+                                            <button className={styles.iconBtn} onClick={() => deleteDriver(d._id)} title="Delete" ><FiTrash2 /></button>
                                         </td>
                                     </tr>
                                 ))
@@ -443,8 +492,41 @@ const DriverDetails = () => {
                         setLoginForm({ ...loginForm, confirm: e.target.value })
                     }
                 />
-            </Modal>
 
+                <input
+                    placeholder="Full Name"
+                    value={loginForm.name}
+                    onChange={e =>
+                        setLoginForm({ ...loginForm, name: e.target.value })
+                    }
+                />
+
+                <input
+                    placeholder="Email"
+                    value={loginForm.email}
+                    onChange={e =>
+                        setLoginForm({ ...loginForm, email: e.target.value })
+                    }
+                />
+
+                <input
+                    placeholder="Phone"
+                    value={loginForm.phone}
+                    onChange={e =>
+                        setLoginForm({ ...loginForm, phone: e.target.value })
+                    }
+                />
+
+                <input
+                    placeholder="License Number"
+                    value={loginForm.license_number}
+                    onChange={e =>
+                        setLoginForm({ ...loginForm, license_number: e.target.value })
+                    }
+                />
+
+
+            </Modal>
 
             {/* DETAILS MODAL */}
             <Modal
@@ -494,16 +576,15 @@ const DriverDetails = () => {
 
                 <input
                     placeholder="License Number"
-                    value={driverForm.license}
+                    value={driverForm.license_number}
                     onChange={e =>
-                        setDriverForm({ ...driverForm, license: e.target.value })
+                        setDriverForm({ ...driverForm, license_number: e.target.value })
                     }
                 />
 
                 <label>Driver License</label>
                 <input type="file" />
             </Modal>
-
 
             {/* PASSWORD MODAL */}
             <Modal
