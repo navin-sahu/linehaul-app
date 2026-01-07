@@ -16,6 +16,7 @@ const AdminLogin = () => {
     e.preventDefault();
     setLoading(true);
     try {
+      console.log("Attempting login with", { username, password });
       const res = await authAPI.login({ username, password });
 
       localStorage.setItem("token", res.data.token);

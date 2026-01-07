@@ -1,7 +1,9 @@
 import api from "./axios";
 
-export const login = (payload) =>
-  api.post("/auth/login", payload);
+export const login = (payload) => {
+  console.log("Logging in with payload:", payload);
+  return api.post("/auth/login", payload);
+}
 
 export const register = (payload) =>
   api.post("/auth/register", payload);
