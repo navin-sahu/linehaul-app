@@ -1,0 +1,336 @@
+import { useMemo, useReducer, useState } from "react";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import DriverLinehaulData from "../data/DriverLinehaulData";
+import StatusBadge from "../widgets/StatusBadge";
+import RowActions from "./RowActions";
+import styles from "../css/EntriesViewer.module.css";
+
+const initialFilters = {
+  date: "",
+  area: "",
+  truck: "",
+  regos: "",
+  trailer: "",
+  boat: "",
+  load: "",
+};
+
+function reducer(state, action) {
+  return { ...state, [action.type]: action.value };
+}
+
+const DriverEntriesViewer = ({ driverName }) => {
+  const [filters, dispatch] = useReducer(reducer, initialFilters);
+
+  const driverJobs = useMemo(() => {
+    const driverBlock = DriverLinehaulData.find((d) => d.driver === driverName);
+
+    return driverBlock ? driverBlock.jobs : [];
+  }, [driverName]);
+
+  /* ================= FILTERED ROWS ================= */
+  const [jobOverrides, setJobOverrides] = useState({});
+
+  const rows = useMemo(() => {
+    return driverJobs
+      .map((job) => {
+        const override = jobOverrides[job.jobId];
+        return {
+          ...job,
+          status: override?.status ?? job.status,
+          statusUpdatedAt: override?.updatedAt ?? job.statusUpdatedAt,
+        };
+      })
+      .filter(
+        (j) =>
+          (!filters.date || j.planDate === filters.date) &&
+          (j.area || "").toLowerCase().includes(filters.area.toLowerCase()) &&
+          (j.trucks || "")
+            .toLowerCase()
+            .includes(filters.truck.toLowerCase()) &&
+          (j.regos || "").toLowerCase().includes(filters.regos.toLowerCase()) &&
+          (j.trailers || "")
+            .toLowerCase()
+            .includes(filters.trailer.toLowerCase()) &&
+          (j.boats || "").toLowerCase().includes(filters.boat.toLowerCase()) &&
+          (j.load || "").toLowerCase().includes(filters.load.toLowerCase())
+      );
+  }, [driverJobs, jobOverrides, filters]);
+
+  /* ================= STATUS UPDATE ================= */
+  const updateRowStatus = (jobId, status) => {
+    setJobOverrides((prev) => {
+      const current = prev[jobId]?.status || "NOT_STARTED";
+
+      // 🔒 Lock COMPLETED
+      if (current === "COMPLETED") return prev;
+
+      return {
+        ...prev,
+        [jobId]: {
+          status,
+          updatedAt: new Date().toISOString(),
+        },
+      };
+    });
+  };
+
+  /* ================= PDF ================= */
+const COLORS = {
+  primary: [57, 29, 56],      // brand color
+  textDark: [33, 33, 33],
+  lightBar: [245, 247, 250],
+  border: [220, 220, 220],
+};
+
+const downloadSingleRowPDF = (row) => {
+  const doc = new jsPDF({
+    orientation: "landscape",
+    unit: "pt",
+    format: "a4",
+  });
+
+  const pageWidth = doc.internal.pageSize.getWidth();
+  let y = 40;
+
+  /* ================= HEADER ================= */
+
+  doc.setFontSize(16);
+  doc.setTextColor(...COLORS.primary);
+  doc.text("Linehaul Logistics", 40, y);
+
+  doc.setFontSize(11);
+  doc.setTextColor(0);
+  doc.text(`Date: ${row.planDate || "-"}`, pageWidth - 200, y);
+  doc.text(
+    `Generated: ${new Date().toLocaleString()}`,
+    pageWidth - 200,
+    y + 14
+  );
+
+  y += 30;
+
+  doc.setFontSize(14);
+  doc.setTextColor(...COLORS.textDark);
+  doc.text("Linehaul Plan", 40, y);
+
+  y += 25;
+
+  /* ================= AREA BAR ================= */
+
+  doc.setFillColor(...COLORS.lightBar);
+  doc.rect(40, y, pageWidth - 80, 22, "F");
+
+  doc.setFontSize(11);
+  doc.setTextColor(...COLORS.primary);
+  doc.text(`Area: ${row.area || "UNKNOWN"} — 1 entry`, 50, y + 15);
+
+  y += 30;
+
+  /* ================= TABLE ================= */
+
+  autoTable(doc, {
+    startY: y,
+    theme: "grid",
+    margin: { left: 40, right: 40 },
+    styles: {
+      fontSize: 9,
+      cellPadding: 5,
+      lineColor: COLORS.border,
+      lineWidth: 0.5,
+    },
+    headStyles: {
+      fillColor: [245, 247, 250],
+      textColor: 0,
+      fontStyle: "bold",
+    },
+    bodyStyles: {
+      textColor: 0,
+    },
+    head: [
+      [
+        "Date",
+        "Truck",
+        "Rego",
+        "Driver",
+        "Trailer",
+        "Start",
+        "Instructions / Notes",
+        "Boats",
+        "Load",
+      ],
+    ],
+    body: [
+      [
+        row.planDate || "",
+        row.trucks || "",
+        row.regos || "",
+        row.name || row.drivers || "",
+        row.trailers || "",
+        row.start || "",
+        row.instructions || "",
+        row.boats || "",
+        row.load || "",
+      ],
+    ],
+    pageBreak: "auto",
+  });
+
+  doc.save(
+    `loadplan-${row.area || "area"}-${row.planDate || "nodate"}.pdf`
+  );
+};
+
+
+
+  /* ================= UI ================= */
+  return (
+    <div className={`card mt-5`}>
+      <h3>My Linehaul Jobs</h3>
+      <div className={styles.viewerWrapper}>
+        <div className={`${styles.entryTable} ${styles.viewerTable}`}>
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  Date
+                  <input
+                    type="date"
+                    value={filters.date}
+                    onChange={(e) =>
+                      dispatch({ type: "date", value: e.target.value })
+                    }
+                  />
+                </th>
+                <th>
+                  Area
+                  <input
+                    value={filters.area}
+                    placeholder="Area"
+                    onChange={(e) =>
+                      dispatch({ type: "area", value: e.target.value })
+                    }
+                  />
+                </th>
+                <th>
+                  Truck
+                  <input
+                    value={filters.truck}
+                    placeholder="Truck"
+                    onChange={(e) =>
+                      dispatch({ type: "truck", value: e.target.value })
+                    }
+                  />
+                </th>
+
+                <th>
+                  Rego
+                  <input
+                    value={filters.regos}
+                    placeholder="Rego"
+                    onChange={(e) =>
+                      dispatch({ type: "regos", value: e.target.value })
+                    }
+                  />
+                </th>
+
+                <th>Driver</th>
+
+                <th>
+                  Trailer
+                  <input
+                    value={filters.trailer}
+                    placeholder="Trailer"
+                    onChange={(e) =>
+                      dispatch({ type: "trailer", value: e.target.value })
+                    }
+                  />
+                </th>
+
+                <th>Start</th>
+
+                <th>
+                  Boats
+                  <input
+                    value={filters.boat}
+                    placeholder="Boat"
+                    onChange={(e) =>
+                      dispatch({ type: "boat", value: e.target.value })
+                    }
+                  />
+                </th>
+
+                <th>
+                  Load
+                  <input
+                    value={filters.load}
+                    placeholder="Load"
+                    onChange={(e) =>
+                      dispatch({ type: "load", value: e.target.value })
+                    }
+                  />
+                </th>
+
+                <th>Instructions</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {rows.length === 0 ? (
+                <tr>
+                  <td colSpan="12">No jobs assigned</td>
+                </tr>
+              ) : (
+                rows.map((r) => (
+                  <tr key={r.jobId}>
+                    <td>{r.planDate}</td>
+                    <td>{r.area}</td>
+                    <td>{r.trucks}</td>
+                    <td>{r.regos}</td>
+                    <td>{r.name}</td>
+                    <td>{r.trailers}</td>
+                    <td>{r.start}</td>
+                    <td>{r.boats}</td>
+                    <td>{r.load}</td>
+                    <td>{r.instructions}</td>
+                    <td
+                      title={
+                        r.statusUpdatedAt
+                          ? new Date(r.statusUpdatedAt).toLocaleString()
+                          : ""
+                      }
+                    >
+                      <StatusBadge
+                        status={r.status || "NOT_STARTED"}
+                        onChange={(newStatus) =>
+                          updateRowStatus(r.jobId, newStatus)
+                        }
+                      />
+                    </td>
+                    <td className={`${styles.actionsCellWrapper} ${styles.verticalAlignMiddle}`}>
+                    <div className={styles.actionsCellSpacer} >
+                      <button
+                        className={styles.pdfBtn}
+                        onClick={() => downloadSingleRowPDF(r)}
+                      >
+                        PDF
+                      </button>
+
+                      <RowActions row={r} onStatusChange={updateRowStatus} />
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default DriverEntriesViewer;

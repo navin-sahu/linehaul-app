@@ -1,0 +1,72 @@
+
+/* ---------------- FORM LAYOUT ---------------- */
+
+.formGroup {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #123;
+  margin-bottom: 4px;
+}
+
+/* ---------------- INPUTS ---------------- */
+
+.select,
+.textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #929292;
+  font-size: 13px;
+  resize: vertical;
+}
+.textarea {
+  max-width: 95%;
+}
+.select:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #391d38;
+}
+
+/* ---------------- TEXTAREA ---------------- */
+
+.textarea {
+  min-height: 90px;
+  line-height: 1.4;
+  resize: none;
+}
+
+/* ---------------- HELPER TEXT ---------------- */
+
+.helper {
+  font-size: 11px;
+  color: #777;
+  margin-top: 4px;
+}
+
+/* ---------------- ACTION BUTTON OVERRIDES ---------------- */
+
+.primaryBtn {
+  background: #391d38;
+  color: #fff;
+}
+
+.primaryBtn:hover {
+  background: #221022;
+}
+
+.cancelBtn {
+  background: #e0e0e0;
+}
+
+/* ---------------- UTIL ---------------- */
+
+.mtZero {
+  margin-top: 0 !important;
+}

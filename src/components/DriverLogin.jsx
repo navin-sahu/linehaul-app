@@ -5,6 +5,7 @@ import "./css/Welcome.css";
 
 const DriverLogin = () => {
   const navigate = useNavigate();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -12,16 +13,30 @@ const DriverLogin = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (
-      username === driverCredentials.username &&
-      password === driverCredentials.password
-    ) {
-      sessionStorage.setItem("user", "driver");
-navigate("/driver-dashboard", { replace: true });
+    const matchedDriver = driverCredentials.find(
+  d =>
+    d.username === username.toLowerCase() &&
+    d.password === password
+);
 
-    } else {
-      setError("Invalid driver credentials");
-    }
+   if (matchedDriver) {
+  sessionStorage.setItem(
+    "driver",
+    JSON.stringify({
+      id: matchedDriver.username,
+      name: matchedDriver.name,   // 🔥 THIS IS THE KEY
+      role: "DRIVER",
+      loggedInAt: Date.now()
+    })
+  );
+
+  sessionStorage.setItem("role", "DRIVER");
+  sessionStorage.setItem("user", "driver");
+
+  navigate("/driver-dashboard", { replace: true });
+} else {
+  setError("Invalid driver credentials");
+}
   };
 
   return (

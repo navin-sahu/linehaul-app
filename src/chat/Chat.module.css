@@ -1,0 +1,143 @@
+/* Floating Button */
+.chatFab {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: cadetblue;
+  color: #fff;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 999;
+  box-shadow: 0 8px 20px rgba(0,0,0,.25);
+}
+
+/* Chat Box */
+.chatBox {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 340px;
+  height: 460px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 15px 40px rgba(0,0,0,.25);
+  display: flex;
+  flex-direction: column;
+  z-index: 999;
+}
+
+.chatHeader {
+  padding: 12px;
+  font-weight: 700;
+  border-bottom: 1px solid #eee;
+}
+
+.chatBody {
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+  background: #f7f9fc;
+}
+
+.chatFooter {
+  padding: 8px;
+  border-top: 1px solid #eee;
+  display: flex;
+  gap: 6px;
+}
+
+.chatFooter input[type="text"] {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 13px;
+}
+
+.sendBtn {
+  background: #391d38;
+  color: #fff;
+  border: none;
+  padding: 0 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.AttachmentPicker{
+        cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* Message */
+.msgRow {
+  margin-bottom: 8px;
+  display: flex;
+}
+
+.msgRow.driver {
+  justify-content: flex-end;
+}
+
+.msgBubble {
+  max-width: 75%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.driverBubble {
+  background: #391d38;
+  color: #fff;
+}
+
+.adminBubble {
+  background: #e9edf5;
+  color: #000;
+}
+
+/* Admin Layout */
+.adminWrapper {
+  display: flex;
+  height: 100%;
+}
+
+.driverList {
+  width: 260px;
+  border-right: 1px solid #ddd;
+  background: #fff;
+}
+
+.driverItem {
+  padding: 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #f1f1f1;
+      background-color: #fff;
+}
+
+.driverItem.active {
+  background: #eef4ff;
+  font-weight: 700;
+}
+
+.unread {
+  background: #e53935;
+  color: #fff;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  margin-left: 6px;
+}
+.fabBadge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #e53935;
+  color: #fff;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 10px;
+}
