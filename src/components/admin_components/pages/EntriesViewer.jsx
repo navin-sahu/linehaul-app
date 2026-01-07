@@ -3,9 +3,19 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import styles from "../css/EntriesViewer.module.css";
 import LinehaulPlanData from "../data/LinehaulPlanData";
+import { areaAPI } from "@/api";
+import { useQuery } from "@tanstack/react-query";
+import { formatDateForInput } from "@/utils";
 
 const EntriesViewer = () => {
-  const viewerAppData = LinehaulPlanData;
+
+  const { data: areas } = useQuery({
+    queryKey: ["linehaulPlan-areas"],
+    queryFn: areaAPI.getAreas,
+    initialData: []
+  });
+
+
   const initialFilters = {
     area: "ALL",
     date: "",
@@ -55,16 +65,27 @@ const EntriesViewer = () => {
   const viewerRows = useMemo(() => {
     let rows = [];
 
-    viewerAppData.areas.forEach((area) => {
-      area.entries.forEach((e) => {
-        rows.push({ ...e, area: area.name });
+    areas?.data?.forEach((area) => {
+      area.entries.forEach((entry) => {
+        rows.push({
+          area: area.name,
+          planDate: entry.plan_date ? formatDateForInput(entry.plan_date) : "",
+          trucks: entry.truck,
+          regos: entry.rego,
+          drivers: entry.driver_name,
+          trailers: entry.trailer,
+          start: entry.start_time,
+          instructions: entry.instructions,
+          boats: entry.boat,
+          load: entry.load,
+        });
       });
     });
 
     return rows.filter(
       (r) =>
         (filters.area === "ALL" || r.area === filters.area) &&
-        (!filters.date || r.planDate === filters.date) &&
+        (!filters.date || r.planDate === formatDateForInput(filters.date)) &&
         (r.trucks || "").toLowerCase().includes(filters.truck.toLowerCase()) &&
         (r.regos || "").toLowerCase().includes(filters.regos.toLowerCase()) &&
         (r.drivers || "")
@@ -74,7 +95,7 @@ const EntriesViewer = () => {
           .toLowerCase()
           .includes(filters.trailers.toLowerCase())
     );
-  }, [viewerAppData, filters]);
+  }, [ areas, filters ]);
 
   const COLORS = {
     primary: [30, 90, 160],
@@ -326,7 +347,7 @@ const EntriesViewer = () => {
                       }
                     >
                       <option value="ALL">All</option>
-                      {LinehaulPlanData.areas.map((a) => (
+                      {areas.data?.map((a) => (
                         <option key={a.name} value={a.name}>
                           {a.name}
                         </option>

@@ -1,13 +1,21 @@
 import { useNavigate } from "react-router-dom";
 import CitySummaryCard from "../widgets/CitySummaryCard";
-import { getCitySummary } from "../widgets/GetCitySummary";
 import DriverUpdatesData from "../data/DriverUpdatesData"
 import LinehaulPlanData from "../data/LinehaulPlanData";
 import EntriesViewer from "../pages/EntriesViewer";
 import styles from "../css/AdminDashboard.module.css";
+import { useQuery } from "@tanstack/react-query";
+import { areaAPI } from "@/api";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
+    const { data: areas } = useQuery({
+      queryKey: ["linehaul-area-summaries"],
+      queryFn: areaAPI.getAllAreaSummary,
+      initialData: []
+    });
+
+
 
   return (
     <>
@@ -15,19 +23,16 @@ const AdminDashboard = () => {
 
 
      <div className={styles.citySummaryGrid}>
-  {LinehaulPlanData.areas.map(area => {
-    const summary = getCitySummary(
-      LinehaulPlanData,
-      DriverUpdatesData,
-      area.name
-    );
+  {areas?.data?.map(area => {
+
+    console.log("Summary for", area.name, ":", area);
 
     return (
       <CitySummaryCard
         key={area.name}
-        data={summary}
+        data={area}
         onClick={() =>
-          navigate(`/admin/city/${summary.city}`)
+          navigate(`/admin/city/${area._id}`)
         }
       />
     );

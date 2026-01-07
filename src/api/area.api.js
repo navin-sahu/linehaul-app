@@ -13,6 +13,12 @@ export const getAreas = () =>
   api.get("/areas");
 
 /**
+ * Get all areas with summary
+ */
+export const getAllAreaSummary = () =>
+  api.get("/areas/summary");
+
+/**
  * Get single area
  */
 export const getAreaById = (id) =>

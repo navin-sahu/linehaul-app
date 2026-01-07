@@ -24,7 +24,13 @@ export const getEntriesByArea = (areaid) =>
 export const createEntry = (areaid, data) =>
   api.post(`/areas/${areaid}/entry`, data);
 
+/**
+ * Update entry
+ */
+export const updateEntry = (areaId, entryId, data) =>
+  api.put(`/areas/${areaId}/entry/${entryId}`, data);
+
 /** Delete a single entry
  */
-export const deleteEntry = (entryId) =>
-  api.delete(`/entries/${entryId}`);
+export const deleteEntry = (areaId, entryId) =>
+  api.delete(`/areas/${areaId}/entry/${entryId}`);
