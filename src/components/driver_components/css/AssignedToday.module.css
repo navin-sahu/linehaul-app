@@ -1,0 +1,119 @@
+.wrapper {
+  padding: 16px;
+}
+
+.heading {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.empty {
+  padding: 20px;
+  text-align: center;
+  font-size: 13px;
+  color: #777;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 14px;
+}
+.jobCard {
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px;
+  border: 1px solid #e6e9ef;
+  box-shadow: 0 8px 22px rgba(0,0,0,.06);
+  font-size: 13px;
+}
+
+/* ---------- HEADER ---------- */
+
+.topRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.area {
+  font-weight: 700;
+  font-size: 14px;
+  color: #391d38;
+}
+
+.pdfBtn {
+  background: #391d38;
+  color: #fff;
+  border: 0;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+/* ---------- GRID DATA ---------- */
+
+.metaGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 14px;
+}
+
+.metaGrid div {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+}
+
+.metaGrid span {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: #777;
+  margin-bottom: 2px;
+  letter-spacing: .4px;
+}
+
+/* Highlight important fields */
+.metaGrid div:nth-child(1),
+.metaGrid div:nth-child(2),
+.metaGrid div:nth-child(3) {
+  font-weight: 700;
+  font-size: 13px;
+}
+
+/* ---------- NOTES ---------- */
+
+.notes {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed #ddd;
+  font-size: 12px;
+}
+
+.notes span {
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  color: #777;
+  margin-bottom: 4px;
+}
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width: 600px) {
+  .metaGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .pdfBtn {
+    padding: 5px 10px;
+    font-size: 10px;
+  }
+
+  .jobCard {
+    padding: 12px;
+  }
+}

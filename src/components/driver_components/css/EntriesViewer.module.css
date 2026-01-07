@@ -1,0 +1,208 @@
+.viewerWrapper{
+    position: relative;
+}
+
+.viewerWrapper .pdfBtn:hover{
+    background: #000 !important;
+}
+.viewerWrapper .pdfBtn {
+  background: #f44336 !important;
+  color: #fff !important;
+  border: none;
+  padding: 6px 8px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.viewerWrapper .exportBtn:hover{
+    background: #000;
+}
+.viewerWrapper input,
+.viewerWrapper select {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #929292;
+  font-size: 13px;
+  margin-bottom: 8px;
+  box-sizing: border-box;
+}
+.viewerWrapper input:focus,
+.viewerWrapper select:focus {
+  outline: none;
+  border-color: #391d38;
+}
+
+.entryTable {
+  width: 100%;
+  overflow-x: auto;
+}
+.entryTable table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  font-size: 12px;
+}
+
+.entryTable th,.entryTable 
+td {
+  border: 1px solid #eef2fb;
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: top;
+  background-color: cadetblue;
+}
+
+.entryTable th {
+  background: #f7fbff;
+  font-weight: 700;
+  color: #123;
+  font-size: 14px;
+}
+.entryTable .actionTd{
+  min-width: 100px;
+}
+
+.entryTable tbody tr:hover {
+  background: #fafcff;
+}
+.viewerWrapper .actionsCellWrapper button {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 0;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.viewerTable th select,
+.viewerTable th input {
+     width: 100%;
+    margin-top: 4px;
+    font-size: 11px;
+    padding: 4px;
+    max-width: 90px;
+    display: block;
+}
+
+.statusCell {
+  min-width: 110px;
+}
+
+
+.actionsCellWrapper {
+  position: relative;
+  min-width: 120px;
+}
+.actionsCell{
+display: inline-block;
+    position: relative;
+    white-space: nowrap;
+}
+.actionsCell>button{
+   margin-left: 10px;
+}
+
+.iconBtn[title] {
+display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #eef3ff;
+    border: 0;
+    border-radius: 6px;
+    padding: 6px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+.iconBtn[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  background: #111;
+  color: #fff;
+  font-size: 11px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  transform: translateY(-28px);
+}
+.actionsCellSpacer{
+    display: flex;
+    align-items: center;
+}
+.verticalAlignMiddle{
+    vertical-align: middle !important;
+}
+.maxWidth275{
+    max-width: 275px;
+}
+.actionToggle {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: 700;
+}
+
+.actionToggle:hover {
+  background: #eef2fb;
+  color: #000;
+}
+
+.actionMenu {
+  position: absolute;
+  right: 0;
+  top: 28px;
+  min-width: 170px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+  padding: 6px;
+  z-index: 100;
+}
+
+.actionMenu button {
+  width: 100%;
+  background: transparent;
+  border: none;
+  text-align: left;
+  padding: 8px 10px;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.actionMenu button:hover {
+  background: #f5f7ff;
+}
+
+.actionStart {
+  color: #1b5e20;
+  font-weight: 600;
+}
+
+.actionDanger {
+  color: #c62828;
+  font-weight: 600;
+}
+
+.noResults {
+  text-align: center;
+  color: #2e4045;
+  font-size: 13px;
+  padding: 12px;
+}
+
+@media (max-width: 900px) {
+  .entryTable th,
+  .entryTable td {
+    font-size: 12px;
+  }
+
+  .actionsCell {
+    min-width: 90px;
+    white-space: nowrap;
+  }
+}
+
+

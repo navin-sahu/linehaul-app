@@ -1,6 +1,11 @@
 import { NavLink } from "react-router-dom";
+// import { mockDrivers } from "../../../chat/data/mockDrivers";
 
 const AdminSidebar = () => {
+  //  const totalUnread = mockDrivers.reduce(
+  //   (sum, d) => sum + (d.unread || 0),
+  //   0
+  // );
   return (
     <aside className="admin-sidebar">
       <div className="logo">
@@ -19,6 +24,12 @@ const AdminSidebar = () => {
         <NavLink to="/admin/driver-details" className={({ isActive }) => isActive ? "active" : ""}>
           Driver Details
         </NavLink>
+         {/* <NavLink to="/admin/chats" className={({ isActive }) => isActive ? "active" : ""}>
+          Chats
+          {totalUnread > 0 && (
+            <span className="chat-badge">{totalUnread}</span>
+          )}
+        </NavLink> */}
 
         <NavLink to="/admin/analytics" className={({ isActive }) => isActive ? "active" : ""}>
           Analytics

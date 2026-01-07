@@ -1,10 +1,14 @@
 import { Outlet } from "react-router-dom";
+// import { useState } from "react"; 
 import AdminSidebar from "./AdminSidebar";
 import AdminHeader from "./AdminHeader";
 import AdminMobileNav from "./AdminMobileNav";
+// import AdminChatFab from "../../../chat/admin/AdminChatFab";
+// import AdminChatWidget from "../../../chat/admin/AdminChatWidget";
 import "../css/Style.css";
 
 const AdminLayout = () => {
+  // const [chatOpen, setChatOpen] = useState(false);
   return (
     <div className="admin-root">
       <AdminSidebar />
@@ -17,6 +21,10 @@ const AdminLayout = () => {
       </div>
 
       <AdminMobileNav />
+       {/* <AdminChatFab onClick={() => setChatOpen(true)} />
+      {chatOpen && (
+        <AdminChatWidget onClose={() => setChatOpen(false)} />
+      )} */}
     </div>
   );
 };

@@ -1,0 +1,78 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-width: 245px;
+}
+
+.labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: capitalize;
+}
+
+.labels span:nth-child(1) {
+    color: rgb(255, 255, 255);
+}
+
+.labels span:nth-child(2) {
+    color: rgb(245, 158, 11);
+}
+
+.labels span:nth-child(3) {
+    color: green;
+}
+
+.bar {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+}
+
+.dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.dot:hover:not(:disabled) {
+    transform: scale(1.15);
+}
+
+.dot:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.active {
+    animation: pop 0.25s ease;
+}
+
+@keyframes pop {
+    0% {
+        transform: scale(0.8);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.line {
+    width: 90px;
+    height: 4px;
+    border-radius: 4px;
+    margin: 0 6px;
+    transition: background 0.4s ease;
+}

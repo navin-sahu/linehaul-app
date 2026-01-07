@@ -13,6 +13,7 @@ import CityDetail from "./components/admin_components/pages/CityDetail";
 import LinehaulPlan from "./components/admin_components/pages/LinehaulPlan";
 import DriverDetails from "./components/admin_components/pages/DriverDetails";
 import DriverDashboard from "./components/driver_components/pages/DriverDashboard";
+// import AdminChatPage from "./chat/admin/AdminChatPage";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
         <Route path="linehaul-plan" element={<LinehaulPlan />} />
         <Route path="driver-details" element={<DriverDetails />} />
         <Route path="city/:cityName" element={<CityDetail />} />
+        {/* <Route path="chats" element={<AdminChatPage />} /> */}
       </Route>
 
       {/* Protected Driver */}
