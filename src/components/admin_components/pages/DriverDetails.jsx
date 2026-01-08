@@ -287,8 +287,8 @@ const DriverDetails = () => {
 
     const filteredDrivers = drivers?.data?.filter(d =>
         d.name.toLowerCase().includes(filterName.toLowerCase()) &&
-        d.phone.toLowerCase().includes(filterPhone.toLowerCase()) &&
-        d.email.toLowerCase().includes(filterEmail.toLowerCase())
+        d?.phone?.toLowerCase().includes(filterPhone?.toLowerCase()) &&
+        d?.email?.toLowerCase().includes(filterEmail.toLowerCase())
     );
 
     /* ---------------- VALIDATION ---------------- */

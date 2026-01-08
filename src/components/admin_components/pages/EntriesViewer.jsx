@@ -6,14 +6,15 @@ import LinehaulPlanData from "../data/LinehaulPlanData";
 import { areaAPI } from "@/api";
 import { useQuery } from "@tanstack/react-query";
 import { formatDateForInput } from "@/utils";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const EntriesViewer = () => {
 
-  const { data: areas } = useQuery({
+  const { data: areas, isLoading } = useQuery({
     queryKey: ["linehaulPlan-areas"],
     queryFn: areaAPI.getAreas,
-    initialData: []
   });
+
 
 
   const initialFilters = {
@@ -327,6 +328,11 @@ const EntriesViewer = () => {
 
     doc.save("daily-linehaul-plan.pdf");
   };
+
+    if(isLoading){
+    return <LoadingSpinner size={20} />
+  }
+
   return (
     <>
       {/* VIEWER */}

@@ -12,6 +12,7 @@ export const createArea = (data) =>
 export const getAreas = () =>
   api.get("/areas");
 
+
 /**
  * Get all areas with summary
  */

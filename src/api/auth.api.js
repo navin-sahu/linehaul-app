@@ -14,6 +14,10 @@ export const getDrivers = () =>
 export const getDriverById = (driverId) =>
   api.get(`/auth/drivers/${driverId}`);
 
+// input query keyword to search drivers by name
+export const getDriversByName = (keyword) =>
+  api.get(`/auth/drivers/search`, { params: { name: keyword } });
+
 export const updateDriver = (driverId, payload) =>
   api.put(`/auth/drivers/${driverId}`, payload);
 

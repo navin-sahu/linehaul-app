@@ -36,7 +36,7 @@ function App() {
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="linehaul-plan" element={<LinehaulPlan />} />
         <Route path="driver-details" element={<DriverDetails />} />
-        <Route path="city/:id" element={<CityDetail />} />
+        <Route path="city/:id" element={<CityDetail />  } />
       </Route>
 
       {/* Protected Driver */}

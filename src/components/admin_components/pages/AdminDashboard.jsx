@@ -6,26 +6,30 @@ import EntriesViewer from "../pages/EntriesViewer";
 import styles from "../css/AdminDashboard.module.css";
 import { useQuery } from "@tanstack/react-query";
 import { areaAPI } from "@/api";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
-    const { data: areas } = useQuery({
+    const { data: areas, isLoading } = useQuery({
       queryKey: ["linehaul-area-summaries"],
       queryFn: areaAPI.getAllAreaSummary,
-      initialData: []
     });
 
 
+    if(isLoading){
+      return <LoadingSpinner size={20} />;
+    }
 
   return (
     <>
+
+    
+
       <h1>Today’s Plan</h1>
 
 
      <div className={styles.citySummaryGrid}>
   {areas?.data?.map(area => {
-
-    console.log("Summary for", area.name, ":", area);
 
     return (
       <CitySummaryCard
