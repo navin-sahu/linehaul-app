@@ -124,18 +124,7 @@ const LinehaulPlan = () => {
     deleteAreaMutation.mutate(areaId);
   };
 
-  /* ---------------- ENTRY FORM ---------------- */
-
-  const fields = [
-    { name: "trucks", label: "TRUCKS", type: "text" },
-    { name: "regos", label: "REGOS", type: "text" },
-    { name: "drivers", label: "DRIVERS", type: "text" },
-    { name: "trailers", label: "TRAILERS", type: "text" },
-    { name: "start", label: "START", type: "time" }, // ✅ time
-    { name: "boats", label: "BOATS", type: "text" },
-    { name: "load", label: "LOAD", type: "text" },
-    { name: "instructions", label: "INSTRUCTIONS", type: "text" },
-  ];
+  
 
   const addEntry = () => {
     console.log("Adding entry:", form);
