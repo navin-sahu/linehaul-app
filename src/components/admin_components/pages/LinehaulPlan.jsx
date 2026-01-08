@@ -403,6 +403,7 @@ const LinehaulPlan = () => {
                     </tr>
                   </thead>
                   <tbody>
+                  
                     {!isLoading && filteredEntries.length === 0 && (
                       <tr>
                         <td colSpan="11" style={{ textAlign: "center" }}>
