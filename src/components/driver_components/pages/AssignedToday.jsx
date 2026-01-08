@@ -2,6 +2,8 @@ import LinehaulPlanData from "../../admin_components/data/LinehaulPlanData";
 import styles from "../css/AssignedToday.module.css";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { driverApi } from "@/api";
 
 /* ===== PDF COLORS (same as admin) ===== */
 const COLORS = {
@@ -12,8 +14,13 @@ const COLORS = {
 };
 
 const AssignedToday = ({ driverName }) => {
+  
   const today = new Date().toISOString().slice(0, 10);
 
+  const { isLoading, error, data } = useQuery({
+    queryKey: ['linehaulPlan'],
+    queryFn: driverApi.getEntriesByDriveId(driver),
+  });
   /* ===== MERGE AREA INTO ROW ===== */
   const jobs = LinehaulPlanData.areas.flatMap((area) =>
     area.entries
