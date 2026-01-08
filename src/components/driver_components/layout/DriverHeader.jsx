@@ -11,7 +11,7 @@ const DriverHeader = ({ onSearch }) => {
   const navigate = useNavigate();
 
   const driver =
-    JSON.parse(sessionStorage.getItem("driver")) || {};
+    JSON.parse(sessionStorage.getItem("user")) || {};
   const driverId = driver.id;
   const driverName = driver.name || "Driver";
 

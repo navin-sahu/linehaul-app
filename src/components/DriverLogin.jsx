@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { driverCredentials } from "../assets/dummyAuth";
 import "./css/Welcome.css";
+import { authAPI } from "@/api";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const DriverLogin = () => {
   const navigate = useNavigate();
@@ -9,34 +11,23 @@ const DriverLogin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+     e.preventDefault();
+    setLoading(true);
+    try {
+      console.log("Attempting login with", { username, password });
+      const res = await authAPI.login({ username, password });
 
-    const matchedDriver = driverCredentials.find(
-  d =>
-    d.username === username.toLowerCase() &&
-    d.password === password
-);
+      sessionStorage.setItem("token", res.data.token);
+      sessionStorage.setItem("user", JSON.stringify(res.data.user));
 
-   if (matchedDriver) {
-  sessionStorage.setItem(
-    "driver",
-    JSON.stringify({
-      id: matchedDriver.username,
-      name: matchedDriver.name,   // 🔥 THIS IS THE KEY
-      role: "DRIVER",
-      loggedInAt: Date.now()
-    })
-  );
-
-  sessionStorage.setItem("role", "DRIVER");
-  sessionStorage.setItem("user", "driver");
-
-  navigate("/driver-dashboard", { replace: true });
-} else {
-  setError("Invalid driver credentials");
-}
+      navigate("/driver-dashboard", { replace: true });
+    } catch (err) {
+      setLoading(false);
+      setError(err.response?.data?.message || "Login failed");
+    }
   };
 
   return (
@@ -61,8 +52,8 @@ const DriverLogin = () => {
 
           {error && <p className="error">{error}</p>}
 
-          <button className="btn btn-driver" type="submit">
-            Login
+          <button className="btn btn-driver" type="submit" disabled={loading}>
+            {loading ? <LoadingSpinner size={20} /> : "Login"}
           </button>
         </form>
       </div>

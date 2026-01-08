@@ -432,7 +432,10 @@ const DriverDetails = () => {
                                         <td>{d.is_active ? "Active" : "Inactive"}</td>
                                         <td className={styles.actionTd}>
                                             <button className={styles.iconBtn} onClick={() => editDriver(d)} title="Edit" ><FiEdit2 /></button>
-                                            <button className={styles.iconBtn} onClick={() => setShowPasswordModal(true)} title="Change Password" ><FiLock /></button>
+                                            <button className={styles.iconBtn} onClick={() => {
+                                                setEditingDriver(d);
+                                                setShowPasswordModal(true);
+                                            }} title="Change Password" ><FiLock /></button>
                                             <button className={styles.iconBtn} onClick={() => deleteDriver(d._id)} title="Delete" ><FiTrash2 /></button>
                                         </td>
                                     </tr>

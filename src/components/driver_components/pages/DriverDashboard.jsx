@@ -6,7 +6,7 @@ import { Outlet } from "react-router-dom";
 import styles from "../css/DriverDashboard.module.css";
 
 const DriverDashboard = () => {
-  const driver = JSON.parse(sessionStorage.getItem("driver"));
+  const driver = JSON.parse(sessionStorage.getItem("user"));
 
   if (!driver) return <p>Please login again</p>;
 
