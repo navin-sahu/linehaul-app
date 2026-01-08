@@ -27,8 +27,8 @@ const LinehaulPlan = () => {
   const [form, setForm] = useState(emptyEntry);
   const [filterDate, setFilterDate] = useState("");
 
-   const queryClient = useQueryClient();
-  
+  const queryClient = useQueryClient();
+
   const { data: areas } = useQuery({
     queryKey: ["linehaulPlan-areas"],
     queryFn: areaAPI.getAreas,
@@ -43,7 +43,7 @@ const LinehaulPlan = () => {
   });
 
   // fetch drivers for the select field
-  const { data :  drivers} = useQuery({
+  const { data: drivers } = useQuery({
     queryKey: ["linehaulPlan-drivers"],
     queryFn: () => authAPI.getDriversByName(),
     select: (res) => res.data,
@@ -124,8 +124,6 @@ const LinehaulPlan = () => {
     deleteAreaMutation.mutate(areaId);
   };
 
-  
-
   const addEntry = () => {
     console.log("Adding entry:", form);
     if (!selectedArea) return alert("Select an area first");
@@ -204,15 +202,13 @@ const LinehaulPlan = () => {
     setSelectedEntry(null);
   };
 
-
-
   /* ---------------- FILTERED DATA ---------------- */
 
   const filteredEntries = entries.filter((e) =>
-    filterDate ? formatDDMMYYYY(e.plan_date) === formatDDMMYYYY(filterDate) : true
+    filterDate
+      ? formatDDMMYYYY(e.plan_date) === formatDDMMYYYY(filterDate)
+      : true
   );
-
-
 
   /* ---------------- UI ---------------- */
 
@@ -251,7 +247,7 @@ const LinehaulPlan = () => {
                 <div
                   key={a._id}
                   className={`${styles.areaItem} ${
-                    selectedArea === a.name ? styles.active : ""
+                    selectedArea?._id === a._id ? styles.active : ""
                   }`}
                   onClick={() => {
                     setForm(emptyEntry);
@@ -310,8 +306,12 @@ const LinehaulPlan = () => {
               <select
                 value={form.driver_id}
                 onChange={(e) => {
-                  setForm({ ...form, drivers: drivers.find(d => d._id === e.target.value)?.name || "", driver_id: e.target.value });
-                  
+                  setForm({
+                    ...form,
+                    drivers:
+                      drivers.find((d) => d._id === e.target.value)?.name || "",
+                    driver_id: e.target.value,
+                  });
                 }}
               >
                 <option value="">Select Driver</option>
@@ -350,7 +350,9 @@ const LinehaulPlan = () => {
                 type="text"
                 placeholder="INSTRUCTIONS"
                 value={form.instructions}
-                onChange={(e) => setForm({ ...form, instructions: e.target.value })}
+                onChange={(e) =>
+                  setForm({ ...form, instructions: e.target.value })
+                }
               />
             </div>
 
