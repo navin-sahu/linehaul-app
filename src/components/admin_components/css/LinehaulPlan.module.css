@@ -2,6 +2,7 @@
   display: flex;
   gap: 16px;
   margin-bottom: 18px;
+  align-items: flex-start;
 }
 .widthSmall{
   min-width: 250px;
