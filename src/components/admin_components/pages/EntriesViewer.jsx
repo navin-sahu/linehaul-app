@@ -5,7 +5,7 @@ import styles from "../css/EntriesViewer.module.css";
 import LinehaulPlanData from "../data/LinehaulPlanData";
 import { areaAPI } from "@/api";
 import { useQuery } from "@tanstack/react-query";
-import { formatDateForInput } from "@/utils";
+import { formatDDMMYYYY } from "@/utils";
 import LoadingSpinner from "@/components/LoadingSpinner";
 
 const EntriesViewer = () => {
@@ -70,7 +70,7 @@ const EntriesViewer = () => {
       area.entries.forEach((entry) => {
         rows.push({
           area: area.name,
-          planDate: entry.plan_date ? formatDateForInput(entry.plan_date) : "",
+          planDate: entry.plan_date ? formatDDMMYYYY(entry.plan_date) : "",
           trucks: entry.truck,
           regos: entry.rego,
           drivers: entry.driver_name,
@@ -86,7 +86,7 @@ const EntriesViewer = () => {
     return rows.filter(
       (r) =>
         (filters.area === "ALL" || r.area === filters.area) &&
-        (!filters.date || r.planDate === formatDateForInput(filters.date)) &&
+        (!filters.date || r.planDate === formatDDMMYYYY(filters.date)) &&
         (r.trucks || "").toLowerCase().includes(filters.truck.toLowerCase()) &&
         (r.regos || "").toLowerCase().includes(filters.regos.toLowerCase()) &&
         (r.drivers || "")

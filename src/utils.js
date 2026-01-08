@@ -35,3 +35,10 @@ export const formatDateInput = (value) => {
 
   return `${year}-${month}-${day}`;
 };
+
+
+export const formatDDMMYYYY = (date) => {
+    if (!date) return "";
+    const [yyyy, mm, dd] = date.slice(0, 10).split("-");
+    return `${dd}-${mm}-${yyyy}`;
+};

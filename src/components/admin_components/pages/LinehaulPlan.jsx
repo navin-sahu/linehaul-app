@@ -4,14 +4,15 @@ import LinehaulPlanData from "../data/LinehaulPlanData";
 import styles from "../css/LinehaulPlan.module.css";
 import EntriesViewer from "./EntriesViewer";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { formatDate, formatDateInput } from "@/utils";
-import { areaAPI, entryAPI } from "@/api";
+import { formatDateInput, formatDDMMYYYY } from "@/utils";
+import { areaAPI, entryAPI, authAPI } from "@/api";
 
 const emptyEntry = {
   id: null,
   trucks: "",
   regos: "",
   drivers: "",
+  driver_id: "",
   trailers: "",
   start: "",
   boats: "",
@@ -21,12 +22,13 @@ const emptyEntry = {
 };
 
 const LinehaulPlan = () => {
-  const [appData, setAppData] = useState(LinehaulPlanData);
   const [selectedArea, setSelectedArea] = useState(null);
   const [selectedEntry, setSelectedEntry] = useState(null);
   const [form, setForm] = useState(emptyEntry);
   const [filterDate, setFilterDate] = useState("");
 
+   const queryClient = useQueryClient();
+  
   const { data: areas } = useQuery({
     queryKey: ["linehaulPlan-areas"],
     queryFn: areaAPI.getAreas,
@@ -40,7 +42,12 @@ const LinehaulPlan = () => {
     select: (res) => res.data,
   });
 
-  const queryClient = useQueryClient();
+  // fetch drivers for the select field
+  const { data :  drivers} = useQuery({
+    queryKey: ["linehaulPlan-drivers"],
+    queryFn: () => authAPI.getDriversByName(),
+    select: (res) => res.data,
+  });
 
   const addAreaMutation = useMutation({
     mutationFn: areaAPI.createArea,
@@ -142,6 +149,7 @@ const LinehaulPlan = () => {
           truck: form.trucks,
           rego: form.regos,
           driver_name: form.drivers,
+          driver: form.driver_id,
           trailer: form.trailers,
           start_time: form.start,
           boat: form.boats,
@@ -160,7 +168,6 @@ const LinehaulPlan = () => {
   const editEntry = (id) => {
     console.log("Editing entry with id:", id);
     setSelectedEntry(id);
-    const area = selectedArea;
     const entry = areas.data
       .flatMap((a) => a.entries)
       .find((e) => e._id === id);
@@ -171,13 +178,13 @@ const LinehaulPlan = () => {
       trucks: entry.truck,
       regos: entry.rego,
       drivers: entry.driver_name,
+      driver_id: entry.driver || "",
       trailers: entry.trailer,
       start: entry.start_time,
       boats: entry.boat,
       load: entry.load,
       instructions: entry.instructions,
     });
-    removeEntry(id, false);
   };
 
   const updateEntry = () => {
@@ -192,6 +199,7 @@ const LinehaulPlan = () => {
         entry: {
           truck: form.trucks,
           rego: form.regos,
+          driver: form.driver_id,
           driver_name: form.drivers,
           trailer: form.trailers,
           start_time: form.start,
@@ -207,34 +215,15 @@ const LinehaulPlan = () => {
     setSelectedEntry(null);
   };
 
-  const removeEntry = (id, confirm = true) => {
-    if (confirm && !window.confirm("Delete entry?")) return;
 
-    setAppData((prev) => ({
-      ...prev,
-      areas: prev.areas.map((a) =>
-        a.name === selectedArea
-          ? { ...a, entries: a.entries.filter((e) => e.id !== id) }
-          : a
-      ),
-    }));
-  };
 
   /* ---------------- FILTERED DATA ---------------- */
 
-  const selectedAreaData = selectedArea
-    ? appData.areas.find((a) => a.name === selectedArea)
-    : null;
-
   const filteredEntries = entries.filter((e) =>
-    filterDate ? e.plan_date?.slice(0, 10) === filterDate : true
+    filterDate ? formatDDMMYYYY(e.plan_date) === formatDDMMYYYY(filterDate) : true
   );
 
-  const formatDDMMYYYY = (date) => {
-    if (!date) return "";
-    const [yyyy, mm, dd] = date.slice(0, 10).split("-");
-    return `${dd}-${mm}-${yyyy}`;
-  };
+
 
   /* ---------------- UI ---------------- */
 
@@ -309,15 +298,71 @@ const LinehaulPlan = () => {
                 onChange={(e) => setForm({ ...form, planDate: e.target.value })}
               />
 
-              {fields.map(({ name, label, type }) => (
-                <input
-                  key={name}
-                  type={type}
-                  placeholder={label}
-                  value={form[name]}
-                  onChange={(e) => setForm({ ...form, [name]: e.target.value })}
-                />
-              ))}
+              <input
+                type="text"
+                placeholder="TRUCKS"
+                value={form.trucks}
+                onChange={(e) => setForm({ ...form, trucks: e.target.value })}
+              />
+              <input
+                type="text"
+                placeholder="REGOS"
+                value={form.regos}
+                onChange={(e) => setForm({ ...form, regos: e.target.value })}
+              />
+              {/* <input
+                type="text"
+                placeholder="DRIVERS"
+                value={form.drivers}
+                onChange={(e) => setForm({ ...form, drivers: e.target.value })}
+              /> */}
+              {/* replacing with a select field */}
+              {/* on selecting it should add driver_id as well as driver */}
+              <select
+                value={form.driver_id}
+                onChange={(e) => {
+                  setForm({ ...form, drivers: drivers.find(d => d._id === e.target.value)?.name || "", driver_id: e.target.value });
+                  
+                }}
+              >
+                <option value="">Select Driver</option>
+                {/** populate options from drivers data */}
+                {drivers?.map((driver) => (
+                  <option key={driver?._id} value={driver?._id}>
+                    {driver?.name}
+                  </option>
+                ))}
+              </select>
+              <input
+                type="text"
+                placeholder="TRAILERS"
+                value={form.trailers}
+                onChange={(e) => setForm({ ...form, trailers: e.target.value })}
+              />
+              <input
+                type="time"
+                placeholder="START"
+                value={form.start}
+                onChange={(e) => setForm({ ...form, start: e.target.value })}
+              />
+              <input
+                type="text"
+                placeholder="BOATS"
+                value={form.boats}
+                onChange={(e) => setForm({ ...form, boats: e.target.value })}
+              />
+              <input
+                type="text"
+                placeholder="LOAD"
+                value={form.load}
+                onChange={(e) => setForm({ ...form, load: e.target.value })}
+              />
+              <input
+                type="text"
+                placeholder="INSTRUCTIONS"
+                value={form.instructions}
+                onChange={(e) => setForm({ ...form, instructions: e.target.value })}
+              />
             </div>
 
             {selectedEntry ? (
