@@ -271,57 +271,78 @@ const EntriesViewer = () => {
 
       y += 30;
 
-      Object.entries(reasons).forEach(([, rows]) => {
-        doc.setFontSize(10);
-        doc.setTextColor(0);
+    Object.entries(reasons).forEach(([reason, rows]) => {
+  // optional: sort like PHP
+  rows.sort((a, b) => (a.start || "").localeCompare(b.start || ""));
 
-        autoTable(doc, {
-          startY: y,
-          theme: "grid",
-          margin: { left: 40, right: 40 },
+  autoTable(doc, {
+    startY: y,
+    theme: "grid",
+    margin: { left: 40, right: 40 },
+
+    styles: {
+      fontSize: 9,
+      cellPadding: 5,
+      lineColor: COLORS.border,
+      lineWidth: 0.5,
+    },
+
+    headStyles: {
+      fillColor: [245, 247, 250],
+      textColor: 0,
+      fontStyle: "bold",
+    },
+
+    bodyStyles: {
+      textColor: 0,
+    },
+
+    head: [
+      [
+        {
+          content: `Reason: ${reason} — ${rows.length} entr${
+            rows.length > 1 ? "ies" : "y"
+          }`,
+          colSpan: 9,
           styles: {
-            fontSize: 9,
-            cellPadding: 5,
-            lineColor: COLORS.border,
-            lineWidth: 0.5,
-          },
-          headStyles: {
-            fillColor: [245, 247, 250],
-            textColor: 0,
+            fillColor: [238, 247, 255], // light blue
+            textColor: COLORS.primary,
             fontStyle: "bold",
+            halign: "left",
           },
-          bodyStyles: {
-            textColor: 0,
-          },
-          head: [
-            [
-              "Date",
-              "Truck",
-              "Rego",
-              "Driver",
-              "Trailer",
-              "Start",
-              "Instructions / Notes",
-              "Boats",
-              "Load",
-            ],
-          ],
-          body: rows.map((r) => [
-            r.planDate || "",
-            r.trucks || "",
-            r.regos || "",
-            r.drivers || "",
-            r.trailers || "",
-            r.start || "",
-            r.instructions || "",
-            r.boats || "",
-            r.load || "",
-          ]),
-          pageBreak: "auto",
-        });
+        },
+      ],
+      [
+        "Date",
+        "Truck",
+        "Rego",
+        "Driver",
+        "Trailer",
+        "Start",
+        "Instructions / Notes",
+        "Boats",
+        "Load",
+      ],
+    ],
 
-        y = doc.lastAutoTable.finalY + 18;
-      });
+    body: rows.map((r) => [
+      r.planDate || "",
+      r.trucks || "",
+      r.regos || "",
+      r.drivers || "",
+      r.trailers || "",
+      r.start || "",
+      r.instructions || "",
+      r.boats || "",
+      r.load || "",
+    ]),
+
+    pageBreak: "auto",
+  });
+
+  y = doc.lastAutoTable.finalY + 18;
+});
+
 
       y += 10;
     });
