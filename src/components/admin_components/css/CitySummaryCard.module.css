@@ -40,7 +40,9 @@
   background: cadetblue;
   height: 100%;
 }
-
+.issuesDetail{
+  font-size: 13px;
+}
 .pending {
   background: #f44336;
   height: 100%;
