@@ -1,20 +1,26 @@
-import { useState } from "react";
+import { NavLink } from "react-router-dom";
 
 const AdminMobileNav = () => {
-  const [activeIndex, setActiveIndex] = useState(2); 
-
-  const items = ["🏠", "📋", "➕", "📊", "⚙️"];
+  const items = [
+    { icon: "🏠", to: "/admin/dashboard" },
+    { icon: "📋", to: "/admin/linehaul-plan" },
+    { icon: "➕", to: "/admin/driver-details" },
+    { icon: "📊", to: "/admin/analytics" },
+    { icon: "⚙️", to: "/admin/settings" },
+  ];
 
   return (
     <nav className="mobile-nav">
-      {items.map((icon, index) => (
-        <span
+      {items.map((item, index) => (
+        <NavLink
           key={index}
-          className={activeIndex === index ? "active" : ""}
-          onClick={() => setActiveIndex(index)}
+          to={item.to}
+          className={({ isActive }) =>
+            isActive ? "mobile-item active" : "mobile-item"
+          }
         >
-          {icon}
-        </span>
+          {item.icon}
+        </NavLink>
       ))}
     </nav>
   );

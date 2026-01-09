@@ -416,7 +416,7 @@ const LinehaulPlan = () => {
                       filteredEntries.map((e, i) => (
                         <tr key={e?._id || i}>
                           <td>{selectedArea.name}</td>
-                          <td>{formatDDMMYYYY(e?.plan_date)}</td>
+                          <td className={styles.dateTableCell}>{formatDDMMYYYY(e?.plan_date)}</td>
                           <td>{e?.truck}</td>
                           <td>{e?.rego}</td>
                           <td>{e?.driver_name}</td>
