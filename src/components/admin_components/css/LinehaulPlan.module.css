@@ -15,7 +15,7 @@
 .areasList{
   max-height: 300px;
   overflow-y: auto;
-   padding: 0 10px 0 0;
+   padding: 12px 10px 0 0;
 }
 .areaItem {
     display: flex;
