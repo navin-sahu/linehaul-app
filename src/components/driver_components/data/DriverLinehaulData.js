@@ -1,6 +1,6 @@
 export const DriverLinehaulData = [
   {
-    driver: "John",
+    driver: "John Smith",
     jobs: [
       {
         jobId: "R1-2026-01-06",

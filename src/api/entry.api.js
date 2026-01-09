@@ -34,3 +34,6 @@ export const updateEntry = (areaId, entryId, data) =>
  */
 export const deleteEntry = (areaId, entryId) =>
   api.delete(`/areas/${areaId}/entry/${entryId}`);
+
+export const getEntriesByDriver = (driverName) =>
+  api.get(`/drivers/${driverName}/entries`);
