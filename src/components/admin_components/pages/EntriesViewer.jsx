@@ -369,6 +369,7 @@ const EntriesViewer = () => {
                     Area
                     <select
                       value={filters.area}
+                      autoComplete="off"
                       onChange={(e) =>
                         dispatch({ type: "SET_AREA", payload: e.target.value })
                       }
@@ -387,6 +388,7 @@ const EntriesViewer = () => {
                     <input
                       type="date"
                       value={filters.date}
+                      autoComplete="off"
                       onChange={(e) =>
                         dispatch({ type: "SET_DATE", payload: e.target.value })
                       }
@@ -397,6 +399,7 @@ const EntriesViewer = () => {
                     Truck
                     <input
                       value={filters.truck}
+                      autoComplete="off"
                       onChange={(e) =>
                         dispatch({ type: "SET_TRUCK", payload: e.target.value })
                       }
@@ -408,6 +411,7 @@ const EntriesViewer = () => {
                     Regos
                     <input
                       value={filters.regos}
+                      autoComplete="off"
                       onChange={(e) =>
                         dispatch({ type: "SET_REGOS", payload: e.target.value })
                       }
@@ -419,6 +423,7 @@ const EntriesViewer = () => {
                     Drivers
                     <input
                       value={filters.drivers}
+                      autoComplete="off"
                       onChange={(e) =>
                         dispatch({
                           type: "SET_DRIVERS",
@@ -433,6 +438,7 @@ const EntriesViewer = () => {
                     Trailers
                     <input
                       value={filters.trailers}
+                      autoComplete="off"
                       onChange={(e) =>
                         dispatch({
                           type: "SET_TRAILERS",

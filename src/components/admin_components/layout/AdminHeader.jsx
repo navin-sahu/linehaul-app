@@ -57,6 +57,7 @@ useEffect(() => {
       <input
         type="search"
         placeholder="Search trailer, driver, route..."
+        autoComplete="off"
         value={search}
         onChange={handleSearch}
         className={styles.search}

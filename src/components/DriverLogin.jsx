@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { driverCredentials } from "../assets/dummyAuth";
 import "./css/Welcome.css";
 import { authAPI } from "@/api";
 import LoadingSpinner from "@/components/LoadingSpinner";
@@ -39,6 +38,7 @@ const DriverLogin = () => {
           <input
             type="text"
             placeholder="Driver ID / Username"
+            autoComplete="driverUserName"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
@@ -46,6 +46,7 @@ const DriverLogin = () => {
           <input
             type="password"
             placeholder="Password"
+            autoComplete="driverPassword"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />

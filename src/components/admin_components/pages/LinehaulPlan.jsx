@@ -226,6 +226,7 @@ const LinehaulPlan = () => {
               <input
                 placeholder="Add or search area"
                 value={newArea}
+                autoComplete="off"
                 onChange={(e) => setNewArea(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
@@ -280,18 +281,21 @@ const LinehaulPlan = () => {
               <input
                 type="date"
                 value={form.planDate}
+                autoComplete="off"
                 onChange={(e) => setForm({ ...form, planDate: e.target.value })}
               />
 
               <input
                 type="text"
                 placeholder="TRUCKS"
+                autoComplete="off"
                 value={form.trucks}
                 onChange={(e) => setForm({ ...form, trucks: e.target.value })}
               />
               <input
                 type="text"
                 placeholder="REGOS"
+                autoComplete="off"
                 value={form.regos}
                 onChange={(e) => setForm({ ...form, regos: e.target.value })}
               />
@@ -325,30 +329,35 @@ const LinehaulPlan = () => {
               <input
                 type="text"
                 placeholder="TRAILERS"
+                autoComplete="off"
                 value={form.trailers}
                 onChange={(e) => setForm({ ...form, trailers: e.target.value })}
               />
               <input
                 type="time"
                 placeholder="START"
+                autoComplete="off"
                 value={form.start}
                 onChange={(e) => setForm({ ...form, start: e.target.value })}
               />
               <input
                 type="text"
                 placeholder="BOATS"
+                autoComplete="off"
                 value={form.boats}
                 onChange={(e) => setForm({ ...form, boats: e.target.value })}
               />
               <input
                 type="text"
                 placeholder="LOAD"
+                autoComplete="off"
                 value={form.load}
                 onChange={(e) => setForm({ ...form, load: e.target.value })}
               />
               <input
                 type="text"
                 placeholder="INSTRUCTIONS"
+                autoComplete="off"
                 value={form.instructions}
                 onChange={(e) =>
                   setForm({ ...form, instructions: e.target.value })

@@ -74,6 +74,7 @@ const openNotifications = () => {
       <input
         type="search"
         placeholder="Search trip, load, trailer..."
+        autoComplete="off"
         value={search}
         onChange={(e) => {
           setSearch(e.target.value);

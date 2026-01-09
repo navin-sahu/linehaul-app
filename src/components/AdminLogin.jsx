@@ -39,6 +39,7 @@ const AdminLogin = () => {
           <input
             type="text"
             placeholder="Username"
+            autoComplete="adminUserName"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
@@ -46,6 +47,7 @@ const AdminLogin = () => {
           <input
             type="password"
             placeholder="Password"
+            autoComplete="adminPassword"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
