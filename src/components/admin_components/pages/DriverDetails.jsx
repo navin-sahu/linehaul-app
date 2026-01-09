@@ -269,7 +269,7 @@ const DriverDetails = () => {
                             className={`${styles.primaryBtn}  mt-0`}
                             onClick={submitLogin}
                         >
-                            Next
+                            Submit
                         </button>
                     </>
                 }
