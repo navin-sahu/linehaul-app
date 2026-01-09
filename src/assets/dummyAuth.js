@@ -4,8 +4,8 @@ export const adminCredentials = {
 };
 
 export const driverCredentials = [
-  { username: "john", password: "*2iwLrWm31", name: "John" },
-  { username: "frank", password: "*2iwLrWm31", name: "Frank" },
+  { username: "johnsmith", password: "John@123", name: "John" },
+  { username: "motu", password: "Motu@123", name: "Frank" },
   { username: "aman", password: "*2iwLrWm31", name: "Aman" },
   { username: "ravi", password: "*2iwLrWm31", name: "Ravi" },
   { username: "cas", password: "*2iwLrWm31", name: "CAS" },
