@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { entryAPI } from "@/api";
-import styles from "../css/LinehaulPlan.module.css";
+import { areaAPI } from "@/api";
+import styles from "../css/CityDetail.module.css";
 
 const PendingLinehaulTable = () => {
   const { data = [], isLoading } = useQuery({
-    queryKey: ["pending-linehaul-entries"],
-    queryFn: entryAPI.getAllEntries,
+    queryKey: ["linehaulPlan-areas"],
+    queryFn: areaAPI.getAreas,
     select: (res) => res.data,
   });
 
