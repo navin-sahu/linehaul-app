@@ -2,8 +2,9 @@ import LinehaulPlanData from "../../admin_components/data/LinehaulPlanData";
 import styles from "../css/AssignedToday.module.css";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-// import { driverApi } from "@/api";
+import { useQuery } from "@tanstack/react-query";
+import { driverApi } from "@/api";
+import { formatDDMMYYYY } from "@/utils";
 
 /* ===== PDF COLORS (same as admin) ===== */
 const COLORS = {
@@ -14,24 +15,30 @@ const COLORS = {
 };
 
 const AssignedToday = ({ driverName }) => {
-  
+  const driver = JSON.parse(localStorage.getItem("user"));
   const today = new Date().toISOString().slice(0, 10);
 
-  // const { isLoading, error, data } = useQuery({
-  //   queryKey: ['linehaulPlan'],
-  //   queryFn: driverApi.getEntriesByDriveId(driverId),
-  // });
+  const { data: driverEntries, isLoading, error } = useQuery({
+    queryKey: ['driverJobs', driverName],
+    queryFn: () => driverApi.getEntriesByDriveId(driver.id),
+  });
+
+    if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error loading jobs.</p>;
+  }
+
+  const driverJobsData = driverEntries?.data || [];
   /* ===== MERGE AREA INTO ROW ===== */
-  const jobs = LinehaulPlanData.areas.flatMap((area) =>
-    area.entries
-      .filter(
-        (e) =>
-          e.drivers === driverName &&
-          e.planDate === today &&
-          e.status !== "COMPLETED"
-      )
-      .map((e) => ({ ...e, area: area.name }))
-  );
+  const jobs = driverJobsData.filter(
+    (e) =>
+    formatDDMMYYYY(e.plan_date) === formatDDMMYYYY(today) &&
+    e.status !== "completed"
+  )
+
 
   /* ===== SINGLE JOB PDF ===== */
   const downloadSingleRowPDF = (row) => {
@@ -50,7 +57,7 @@ const AssignedToday = ({ driverName }) => {
 
     doc.setFontSize(11);
     doc.setTextColor(0);
-    doc.text(`Date: ${row.planDate || "-"}`, pageWidth - 200, y);
+    doc.text(`Date: ${formatDDMMYYYY(row.plan_date) || "-"}`, pageWidth - 200, y);
     doc.text(
       `Generated: ${new Date().toLocaleString()}`,
       pageWidth - 200,
@@ -103,11 +110,11 @@ const AssignedToday = ({ driverName }) => {
       ],
       body: [
         [
-          row.planDate,
-          row.trucks,
-          row.regos,
-          row.drivers,
-          row.trailers,
+          formatDDMMYYYY(row.plan_date),
+          row.truck,
+          row.rego,
+          row.driver_name,
+          row.trailer,
           row.start,
           row.instructions,
           row.boats,
@@ -116,7 +123,7 @@ const AssignedToday = ({ driverName }) => {
       ],
     });
 
-    doc.save(`job-${row.trucks}-${row.planDate}.pdf`);
+    doc.save(`job-${row.truck}-${row.plan_date}.pdf`);
   };
 
   return (
@@ -142,11 +149,11 @@ const AssignedToday = ({ driverName }) => {
               <div className={styles.metaGrid}>
                 <div>
                   <span>Truck</span>
-                  {j.trucks}
+                  {j.truck}
                 </div>
                 <div>
                   <span>Start</span>
-                  {j.start || "-"}
+                  {j.start_time || "-"}
                 </div>
 
                 <div>
@@ -155,21 +162,21 @@ const AssignedToday = ({ driverName }) => {
                 </div>
                 <div>
                   <span>Boats</span>
-                  {j.boats || "-"}
+                  {j.boat || "-"}
                 </div>
 
                 <div>
                   <span>Date</span>
-                  {j.planDate}
+                  {formatDDMMYYYY(j.plan_date)}
                 </div>
                 <div>
                   <span>Rego</span>
-                  {j.regos}
+                  {j.rego}
                 </div>
 
                 <div>
                   <span>Trailer</span>
-                  {j.trailers || "-"}
+                  {j.trailer || "-"}
                 </div>
               </div>
 

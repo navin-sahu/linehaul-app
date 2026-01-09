@@ -152,6 +152,7 @@ const DriverDetails = () => {
             documents: {}
         }); 
     };
+    
     const saveDriver = () => {
         if (!driverForm.name || !driverForm.phone) {
             alert("Name & phone required");

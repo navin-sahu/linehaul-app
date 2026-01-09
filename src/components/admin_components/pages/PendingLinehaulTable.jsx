@@ -67,7 +67,7 @@ const PendingLinehaulTable = () => {
                 <td>
                   {row.transportation_issue ? (
                     <span className={styles.issuesDetail}>
-                      ⚠️ Reported
+                      ⚠️ {row.transportation_issue}
                     </span>
                   ) : (
                     "—"

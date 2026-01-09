@@ -15,8 +15,6 @@ const EntriesViewer = () => {
     queryFn: areaAPI.getAreas,
   });
 
-
-
   const initialFilters = {
     area: "ALL",
     date: "",
