@@ -1,3 +1,8 @@
+.entryTable {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 15px;
+}
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -11,6 +16,7 @@ th, td {
   text-align: left;
   vertical-align: top;
   background-color: cadetblue;
+  font-size: 12px;
 }
 
 th {
@@ -19,7 +25,9 @@ th {
   color: #123;
   font-size: 14px;
 }
-
+.dateTableCell {
+    white-space: nowrap;
+}
 .completed {
     color: #fff;
     font-weight: 700;
