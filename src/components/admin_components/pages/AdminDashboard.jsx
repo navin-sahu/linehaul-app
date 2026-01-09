@@ -7,6 +7,7 @@ import styles from "../css/AdminDashboard.module.css";
 import { useQuery } from "@tanstack/react-query";
 import { areaAPI } from "@/api";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import PendingLinehaulTable from "./PendingLinehaulTable";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -36,6 +37,9 @@ const AdminDashboard = () => {
           ))}
       </div>
 
+      <div className="mt-5">
+        <PendingLinehaulTable />
+      </div>
       <div className="mt-5">
         <EntriesViewer />
       </div>
