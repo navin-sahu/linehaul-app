@@ -28,25 +28,17 @@ const CityDetail = () => {
     e => formatDateInput(e.plan_date) === formatDateInput(today)
   );
 
-  console.log(plannedToday)
-
-  const updatesToday = DriverUpdatesData.filter(
-    u => formatDateInput(u.planDate) === formatDateInput(today)
-  );
 
   const rows = plannedToday.map(plan => {
-    const update = updatesToday.find(
-      u => u.truck === plan.trucks
-    );
 
     return {
       truck: plan.truck,
       driver: plan.driver,
       phone: plan.phone || "-",
       email: plan.driverEmail || "-",
-      status: update?.status || "pending",
-      transportIssue: update?.transport_issue || false,
-      issueNote: update?.issueNote || ""
+      status: plan?.status || "pending",
+      transportIssue: plan?.transportation_issue || "",
+      issueNote: plan?.issueNote || ""
     };
   });
 
@@ -82,12 +74,12 @@ const CityDetail = () => {
               <td>{row.driver?.phone}</td>
               <td>{row.driver?.email}</td>
               <td className={styles[row.status]}>
-                {row.status}
+                {row?.status}
               </td>
               <td>
                 {row.transportIssue ? (
                   <span className={styles.issuesDetail}>
-                    ⚠️ {row.issueNote || "Reported"}
+                    ⚠️ {row.transportIssue}
                   </span>
                 ) : (
                   "—"

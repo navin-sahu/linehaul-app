@@ -2,12 +2,12 @@ import styles from "../css/StatusBadge.module.css";
 
 const FLOW = [
   { key: "NOT_STARTED", label: "Not Started", color: "#9ca3af" },
-  { key: "IN_TRANSIT", label: "In Transit", color: "#f59e0b" },
+  { key: "IN_TRANSIT", label: "In Transit", color: "#e5f50bff" },
   { key: "COMPLETED", label: "Completed", color: "green" }
 ];
 
 const StatusBadge = ({ status, onChange }) => {
-  const activeIndex = FLOW.findIndex(s => s.key === status);
+  const activeIndex = FLOW.findIndex(s => s.key.toLowerCase() === status.toLowerCase());
 
   return (
     <div className={styles.wrapper}>

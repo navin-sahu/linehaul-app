@@ -7,12 +7,13 @@ import RowActions from "./RowActions";
 import styles from "../css/EntriesViewer.module.css";
 import { useQuery } from "@tanstack/react-query";
 import { driverApi } from "@/api";
+import { formatDDMMYYYY } from "@/utils";
 
 const initialFilters = {
   date: "",
   area: "",
   truck: "",
-  regos: "",
+  rego: "",
   trailer: "",
   boat: "",
   load: "",
@@ -25,7 +26,7 @@ function reducer(state, action) {
 
 const DriverEntriesViewer = ({ driverName }) => {
   const driver = JSON.parse(localStorage.getItem("user"));
-  const [filters, dispatch] = useReducer(reducer, initialFilters);
+  const [filters, setFilters] = useState(initialFilters);
 
   const driverJobs = useMemo(() => {
     const driverBlock = DriverLinehaulData.find((d) => d.driver === driverName);
@@ -51,34 +52,24 @@ const DriverEntriesViewer = ({ driverName }) => {
 
   const driverJobsData = driverEntries?.data || [];
 
-  console.log(driverJobsData, Array.isArray(driverJobsData));
-  
-  
-
-  const rows = driverJobs.map((job) => {
-        const override = jobOverrides[job.jobId];
-        return {
-          ...job,
-          status: override?.status ?? job.status,
-          statusUpdatedAt: override?.updatedAt ?? job.statusUpdatedAt,
-        };
-      })
+  const filteredDriverJobsData = driverJobsData
       .filter(
         (j) =>
-          (!filters.date || j.planDate === filters.date) &&
+          (!filters.date || formatDDMMYYYY(j.plan_date) === formatDDMMYYYY(filters.date)) &&
           (j.area || "").toLowerCase().includes(filters.area.toLowerCase()) &&
-          (j.trucks || "")
+          (j.truck || "")
             .toLowerCase()
             .includes(filters.truck.toLowerCase()) &&
-          (j.regos || "").toLowerCase().includes(filters.regos.toLowerCase()) &&
-          (j.trailers || "")
+          (j.rego || "").toLowerCase().includes(filters.rego.toLowerCase()) &&
+          (j.trailer || "")
             .toLowerCase()
             .includes(filters.trailer.toLowerCase()) &&
-          (j.boats || "").toLowerCase().includes(filters.boat.toLowerCase()) &&
+          (j.boat || "").toLowerCase().includes(filters.boat.toLowerCase()) &&
           (j.load || "").toLowerCase().includes(filters.load.toLowerCase())
           
       );
 
+      console.log(filteredDriverJobsData,filters);
 
 
   /* ================= STATUS UPDATE ================= */
@@ -223,7 +214,7 @@ const downloadSingleRowPDF = (row) => {
                     autoComplete="off"
                     value={filters.date}
                     onChange={(e) =>
-                      dispatch({ type: "date", value: e.target.value })
+                      setFilters({ ...filters, date: e.target.value })
                     }
                   />
                 </th>
@@ -234,7 +225,7 @@ const downloadSingleRowPDF = (row) => {
                     placeholder="Area"
                     autoComplete="off"
                     onChange={(e) =>
-                      dispatch({ type: "area", value: e.target.value })
+                      setFilters({ ...filters, area: e.target.value })
                     }
                   />
                 </th>
@@ -245,7 +236,7 @@ const downloadSingleRowPDF = (row) => {
                     placeholder="Truck"
                     autoComplete="off"
                     onChange={(e) =>
-                      dispatch({ type: "truck", value: e.target.value })
+                      setFilters({ ...filters, truck: e.target.value })
                     }
                   />
                 </th>
@@ -257,7 +248,7 @@ const downloadSingleRowPDF = (row) => {
                     placeholder="Rego"
                     autoComplete="off"
                     onChange={(e) =>
-                      dispatch({ type: "regos", value: e.target.value })
+                      setFilters({ ...filters, rego: e.target.value })
                     }
                   />
                 </th>
@@ -271,7 +262,7 @@ const downloadSingleRowPDF = (row) => {
                     placeholder="Trailer"
                     autoComplete="off"
                     onChange={(e) =>
-                      dispatch({ type: "trailer", value: e.target.value })
+                      setFilters({ ...filters, trailer: e.target.value })
                     }
                   />
                 </th>
@@ -285,7 +276,7 @@ const downloadSingleRowPDF = (row) => {
                     placeholder="Boat"
                     autoComplete="off"
                     onChange={(e) =>
-                      dispatch({ type: "boat", value: e.target.value })
+                      setFilters({ ...filters, boat: e.target.value })
                     }
                   />
                 </th>
@@ -297,7 +288,7 @@ const downloadSingleRowPDF = (row) => {
                     placeholder="Load"
                     autoComplete="off"
                     onChange={(e) =>
-                      dispatch({ type: "load", value: e.target.value })
+                      setFilters({ ...filters, load: e.target.value })
                     }
                   />
                 </th>
@@ -309,38 +300,38 @@ const downloadSingleRowPDF = (row) => {
             </thead>
 
             <tbody>
-              {driverJobsData.length === 0 ? (
+              {filteredDriverJobsData.length === 0 ? (
                 <tr>
                   <td colSpan="12">No jobs assigned</td>
                 </tr>
               ) : (
-                driverJobsData?.map((r,i) => (
+                filteredDriverJobsData?.map((r,i) => (
                   <tr key={i}>
-                    <td>{r?.plan_date}</td>
+                    <td>{formatDDMMYYYY(r?.plan_date)}</td>
                     <td>{r?.area}</td>
-                    <td>{r?.trucks}</td>
-                    <td>{r?.regos}</td>
+                    <td>{r?.truck}</td>
+                    <td>{r?.rego}</td>
                     <td>{r?.driver_name}</td>
-                    <td>{r?.trailers}</td>
-                    <td>{r?.start}</td>
-                    <td>{r?.boats}</td>
+                    <td>{r?.trailer}</td>
+                    <td>{r?.start_time}</td>
+                    <td>{r?.boat}</td>
                     <td>{r?.load}</td>
                     <td>{r?.instructions}</td>
-                    {/* <td
+                    <td
                       title={
-                        r.statusUpdatedAt
+                        r?.statusUpdatedAt
                           ? new Date(r.statusUpdatedAt).toLocaleString()
                           : ""
                       }
                     >
                       <StatusBadge
-                        status={r.status || "NOT_STARTED"}
+                        status={r?.status || "NOT_STARTED"}
                         onChange={(newStatus) =>
                           updateRowStatus(r.jobId, newStatus)
                         }
                       />
-                    </td> */}
-                    {/* <td className={`${styles.actionsCellWrapper} ${styles.verticalAlignMiddle}`}>
+                    </td>
+                    <td className={`${styles.actionsCellWrapper} ${styles.verticalAlignMiddle}`}>
                     <div className={styles.actionsCellSpacer} >
                       <button
                         className={styles.pdfBtn}
@@ -351,7 +342,7 @@ const downloadSingleRowPDF = (row) => {
 
                       <RowActions row={r} onStatusChange={updateRowStatus} />
                       </div>
-                    </td> */}
+                    </td>
                   </tr>
                 ))
               )}
