@@ -5,6 +5,7 @@ import styles from "../css/CityDetail.module.css";
 import { useQuery } from "@tanstack/react-query";
 import { areaAPI } from "@/api"
 import { formatDateInput } from "@/utils";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const CityDetail = () => {
   const { id } = useParams();
@@ -20,7 +21,7 @@ const CityDetail = () => {
 
 
   if (!area) {
-    return <p>No data found for {id}</p>;
+    return <LoadingSpinner size={20} />
   }
 
   const plannedToday = area.entries.filter(
