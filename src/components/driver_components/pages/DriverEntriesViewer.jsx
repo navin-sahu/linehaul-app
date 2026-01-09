@@ -5,6 +5,8 @@ import DriverLinehaulData from "../data/DriverLinehaulData";
 import StatusBadge from "../widgets/StatusBadge";
 import RowActions from "./RowActions";
 import styles from "../css/EntriesViewer.module.css";
+import { useQuery } from "@tanstack/react-query";
+import { driverApi } from "@/api";
 
 const initialFilters = {
   date: "",
@@ -20,7 +22,9 @@ function reducer(state, action) {
   return { ...state, [action.type]: action.value };
 }
 
+
 const DriverEntriesViewer = ({ driverName }) => {
+  const driver = JSON.parse(localStorage.getItem("user"));
   const [filters, dispatch] = useReducer(reducer, initialFilters);
 
   const driverJobs = useMemo(() => {
@@ -32,9 +36,26 @@ const DriverEntriesViewer = ({ driverName }) => {
   /* ================= FILTERED ROWS ================= */
   const [jobOverrides, setJobOverrides] = useState({});
 
-  const rows = useMemo(() => {
-    return driverJobs
-      .map((job) => {
+  const { data: driverEntries, isLoading, error } = useQuery({
+    queryKey: ['driverJobs', driverName],
+    queryFn: () => driverApi.getEntriesByDriveId(driver.id),
+  });
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error loading jobs.</p>;
+  }
+
+  const driverJobsData = driverEntries?.data || [];
+
+  console.log(driverJobsData, Array.isArray(driverJobsData));
+  
+  
+
+  const rows = driverJobs.map((job) => {
         const override = jobOverrides[job.jobId];
         return {
           ...job,
@@ -55,8 +76,10 @@ const DriverEntriesViewer = ({ driverName }) => {
             .includes(filters.trailer.toLowerCase()) &&
           (j.boats || "").toLowerCase().includes(filters.boat.toLowerCase()) &&
           (j.load || "").toLowerCase().includes(filters.load.toLowerCase())
+          
       );
-  }, [driverJobs, jobOverrides, filters]);
+
+
 
   /* ================= STATUS UPDATE ================= */
   const updateRowStatus = (jobId, status) => {
@@ -279,24 +302,24 @@ const downloadSingleRowPDF = (row) => {
             </thead>
 
             <tbody>
-              {rows.length === 0 ? (
+              {driverJobsData.length === 0 ? (
                 <tr>
                   <td colSpan="12">No jobs assigned</td>
                 </tr>
               ) : (
-                rows.map((r) => (
-                  <tr key={r.jobId}>
-                    <td>{r.planDate}</td>
-                    <td>{r.area}</td>
-                    <td>{r.trucks}</td>
-                    <td>{r.regos}</td>
-                    <td>{r.name}</td>
-                    <td>{r.trailers}</td>
-                    <td>{r.start}</td>
-                    <td>{r.boats}</td>
-                    <td>{r.load}</td>
-                    <td>{r.instructions}</td>
-                    <td
+                driverJobsData?.map((r,i) => (
+                  <tr key={i}>
+                    <td>{r?.plan_date}</td>
+                    <td>{r?.area}</td>
+                    <td>{r?.trucks}</td>
+                    <td>{r?.regos}</td>
+                    <td>{r?.driver_name}</td>
+                    <td>{r?.trailers}</td>
+                    <td>{r?.start}</td>
+                    <td>{r?.boats}</td>
+                    <td>{r?.load}</td>
+                    <td>{r?.instructions}</td>
+                    {/* <td
                       title={
                         r.statusUpdatedAt
                           ? new Date(r.statusUpdatedAt).toLocaleString()
@@ -309,8 +332,8 @@ const downloadSingleRowPDF = (row) => {
                           updateRowStatus(r.jobId, newStatus)
                         }
                       />
-                    </td>
-                    <td className={`${styles.actionsCellWrapper} ${styles.verticalAlignMiddle}`}>
+                    </td> */}
+                    {/* <td className={`${styles.actionsCellWrapper} ${styles.verticalAlignMiddle}`}>
                     <div className={styles.actionsCellSpacer} >
                       <button
                         className={styles.pdfBtn}
@@ -321,7 +344,7 @@ const downloadSingleRowPDF = (row) => {
 
                       <RowActions row={r} onStatusChange={updateRowStatus} />
                       </div>
-                    </td>
+                    </td> */}
                   </tr>
                 ))
               )}

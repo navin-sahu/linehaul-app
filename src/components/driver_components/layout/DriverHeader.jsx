@@ -11,7 +11,7 @@ const DriverHeader = ({ onSearch }) => {
   const navigate = useNavigate();
 
   const driver =
-    JSON.parse(sessionStorage.getItem("user")) || {};
+    JSON.parse(localStorage.getItem("user")) || {};
   const driverId = driver.id;
   const driverName = driver.name || "Driver";
 
@@ -64,7 +64,7 @@ const openNotifications = () => {
 
   /* ---------------- LOGOUT ---------------- */
   const handleLogout = () => {
-    sessionStorage.clear();
+    localStorage.clear();
     navigate("/", { replace: true });
   };
 

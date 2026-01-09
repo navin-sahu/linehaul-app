@@ -20,8 +20,8 @@ const DriverLogin = () => {
       console.log("Attempting login with", { username, password });
       const res = await authAPI.login({ username, password });
 
-      sessionStorage.setItem("token", res.data.token);
-      sessionStorage.setItem("user", JSON.stringify(res.data.user));
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
       navigate("/driver-dashboard", { replace: true });
     } catch (err) {
