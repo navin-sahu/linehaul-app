@@ -1,5 +1,6 @@
 .admin-root {
   display: flex;
+  max-height: 100vh;
   min-height: 100vh;
   background: #f3f5f7;
 }
@@ -74,7 +75,11 @@ span.chat-badge {
 }
 
 .admin-content {
-  padding: 20px;
+    padding: 20px;
+    padding-bottom: 40px;
+    max-height: 93vh;
+    overflow-y: scroll;
+
 }
 
 .mobile-nav {
