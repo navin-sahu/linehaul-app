@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { driverCredentials } from "../assets/dummyAuth";
 import "./css/Welcome.css";
 import { authAPI } from "@/api";
 import LoadingSpinner from "@/components/LoadingSpinner";
@@ -29,7 +28,9 @@ const DriverLogin = () => {
       setError(err.response?.data?.message || "Login failed");
     }
   };
-
+ const handleCancel = () => {
+    navigate(-1); 
+  };
   return (
     <div className="welcome-wrapper">
       <div className="welcome-card">
@@ -38,7 +39,9 @@ const DriverLogin = () => {
         <form onSubmit={handleSubmit} className="login-form">
           <input
             type="text"
-            placeholder="Driver ID / Username"
+            placeholder="Driver ID / User Name"
+            required
+            autoComplete="driverUserName"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
@@ -46,15 +49,27 @@ const DriverLogin = () => {
           <input
             type="password"
             placeholder="Password"
+            required
+            autoComplete="driverPassword"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
 
           {error && <p className="error">{error}</p>}
-
+ <div className="btn-login-group">
+ 
           <button className="btn btn-driver" type="submit" disabled={loading}>
             {loading ? <LoadingSpinner size={20} /> : "Login"}
           </button>
+            <button
+              className="btn btn-cancel"
+              type="button"
+              onClick={handleCancel}
+              disabled={loading}
+            >
+              Cancel
+            </button>
+          </div>
         </form>
       </div>
     </div>

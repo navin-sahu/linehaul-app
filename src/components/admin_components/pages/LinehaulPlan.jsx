@@ -7,6 +7,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { formatDateInput, formatDDMMYYYY } from "@/utils";
 import { areaAPI, entryAPI, authAPI } from "@/api";
 
+
+
 const emptyEntry = {
   id: null,
   trucks: "",
@@ -226,6 +228,7 @@ const LinehaulPlan = () => {
               <input
                 placeholder="Add or search area"
                 value={newArea}
+                autoComplete="off"
                 onChange={(e) => setNewArea(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
@@ -280,18 +283,21 @@ const LinehaulPlan = () => {
               <input
                 type="date"
                 value={form.planDate}
+                autoComplete="off"
                 onChange={(e) => setForm({ ...form, planDate: e.target.value })}
               />
 
               <input
                 type="text"
                 placeholder="TRUCKS"
+                autoComplete="off"
                 value={form.trucks}
                 onChange={(e) => setForm({ ...form, trucks: e.target.value })}
               />
               <input
                 type="text"
                 placeholder="REGOS"
+                autoComplete="off"
                 value={form.regos}
                 onChange={(e) => setForm({ ...form, regos: e.target.value })}
               />
@@ -325,30 +331,35 @@ const LinehaulPlan = () => {
               <input
                 type="text"
                 placeholder="TRAILERS"
+                autoComplete="off"
                 value={form.trailers}
                 onChange={(e) => setForm({ ...form, trailers: e.target.value })}
               />
               <input
                 type="time"
                 placeholder="START"
+                autoComplete="off"
                 value={form.start}
                 onChange={(e) => setForm({ ...form, start: e.target.value })}
               />
               <input
                 type="text"
                 placeholder="BOATS"
+                autoComplete="off"
                 value={form.boats}
                 onChange={(e) => setForm({ ...form, boats: e.target.value })}
               />
               <input
                 type="text"
                 placeholder="LOAD"
+                autoComplete="off"
                 value={form.load}
                 onChange={(e) => setForm({ ...form, load: e.target.value })}
               />
               <input
                 type="text"
                 placeholder="INSTRUCTIONS"
+                autoComplete="off"
                 value={form.instructions}
                 onChange={(e) =>
                   setForm({ ...form, instructions: e.target.value })
@@ -403,6 +414,7 @@ const LinehaulPlan = () => {
                     </tr>
                   </thead>
                   <tbody>
+                  
                     {!isLoading && filteredEntries.length === 0 && (
                       <tr>
                         <td colSpan="11" style={{ textAlign: "center" }}>
@@ -415,7 +427,7 @@ const LinehaulPlan = () => {
                       filteredEntries.map((e, i) => (
                         <tr key={e?._id || i}>
                           <td>{selectedArea.name}</td>
-                          <td>{formatDDMMYYYY(e?.plan_date)}</td>
+                          <td className={styles.dateTableCell}>{formatDDMMYYYY(e?.plan_date)}</td>
                           <td>{e?.truck}</td>
                           <td>{e?.rego}</td>
                           <td>{e?.driver_name}</td>

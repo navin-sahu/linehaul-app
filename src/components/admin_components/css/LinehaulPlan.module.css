@@ -15,6 +15,7 @@
 .areasList{
   max-height: 300px;
   overflow-y: auto;
+   padding: 12px 10px 0 0;
 }
 .areaItem {
     display: flex;
@@ -83,7 +84,7 @@ background: #391d38;
   margin-bottom: 8px;
   box-sizing: border-box;
 }
-.entryForm input{
+.entryForm input, .entryForm select {
 margin-bottom: 0;
 }
 .linhaulPlanWrapper .addAreaRow {
@@ -149,6 +150,7 @@ margin-bottom: 0;
 .entryTable {
   width: 100%;
   overflow-x: auto;
+  padding-bottom: 15px;
 }
 .entryTable table {
   width: 100%;
@@ -221,6 +223,7 @@ td {
 }
 
 .iconBtn {
+      position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -264,4 +267,23 @@ td {
   border-radius: 4px;
   transform: translateY(-28px);
 }
-
+.dateTableCell{
+  white-space: nowrap;
+}
+@media (max-width:991px) {
+  .widthSmall {
+    width: 100%;
+}
+.grid {
+    flex-wrap: wrap;
+}
+.entryTable {
+    padding-bottom: 15px;
+}
+}
+@media (max-width:767px) {
+ .filterBar {
+    max-width: 145px;
+    margin-left: auto;
+}
+}

@@ -111,7 +111,7 @@ span.chat-badge {
     height: 53px;
 }
 
-.mobile-nav span {
+.mobile-nav .mobile-item {
     width: 45px;
     height: 45px;
     display: flex;
@@ -126,13 +126,13 @@ span.chat-badge {
     padding-bottom: 4px;
 }
 
-.mobile-nav span.active {
+.mobile-nav .mobile-item.active {
     color: #000;
     transform: translateY(-18px);
 }
 
 
-.mobile-nav span::after {
+.mobile-nav .mobile-item::after {
     content: "";
     position: absolute;
     width: 45px;
@@ -148,11 +148,13 @@ span.chat-badge {
 }
 
 
-.mobile-nav span.active::after {
+.mobile-nav .mobile-item.active::after {
     opacity: 1;
     transform: scale(1);
 }
-
+.admin-content {
+    padding-bottom: 120px;
+}
 }
 .card {
     background: #d8d7dc;

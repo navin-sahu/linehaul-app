@@ -220,6 +220,7 @@ const downloadSingleRowPDF = (row) => {
                   Date
                   <input
                     type="date"
+                    autoComplete="off"
                     value={filters.date}
                     onChange={(e) =>
                       dispatch({ type: "date", value: e.target.value })
@@ -231,6 +232,7 @@ const downloadSingleRowPDF = (row) => {
                   <input
                     value={filters.area}
                     placeholder="Area"
+                    autoComplete="off"
                     onChange={(e) =>
                       dispatch({ type: "area", value: e.target.value })
                     }
@@ -241,6 +243,7 @@ const downloadSingleRowPDF = (row) => {
                   <input
                     value={filters.truck}
                     placeholder="Truck"
+                    autoComplete="off"
                     onChange={(e) =>
                       dispatch({ type: "truck", value: e.target.value })
                     }
@@ -252,6 +255,7 @@ const downloadSingleRowPDF = (row) => {
                   <input
                     value={filters.regos}
                     placeholder="Rego"
+                    autoComplete="off"
                     onChange={(e) =>
                       dispatch({ type: "regos", value: e.target.value })
                     }
@@ -265,6 +269,7 @@ const downloadSingleRowPDF = (row) => {
                   <input
                     value={filters.trailer}
                     placeholder="Trailer"
+                    autoComplete="off"
                     onChange={(e) =>
                       dispatch({ type: "trailer", value: e.target.value })
                     }
@@ -278,6 +283,7 @@ const downloadSingleRowPDF = (row) => {
                   <input
                     value={filters.boat}
                     placeholder="Boat"
+                    autoComplete="off"
                     onChange={(e) =>
                       dispatch({ type: "boat", value: e.target.value })
                     }
@@ -289,6 +295,7 @@ const downloadSingleRowPDF = (row) => {
                   <input
                     value={filters.load}
                     placeholder="Load"
+                    autoComplete="off"
                     onChange={(e) =>
                       dispatch({ type: "load", value: e.target.value })
                     }

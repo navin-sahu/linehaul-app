@@ -55,6 +55,7 @@
 .entryTable {
   width: 100%;
   overflow-x: auto;
+  padding-bottom: 15px;
 }
 .entryTable table {
   width: 100%;
