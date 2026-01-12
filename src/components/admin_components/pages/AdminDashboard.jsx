@@ -23,19 +23,22 @@ const AdminDashboard = () => {
     <>
       <h1>Today’s Plan</h1>
 
-      <div className={styles.citySummaryGrid}>
-        {areas?.data
-          ?.filter(
-            (area) => area.total > 0 
-          )
-          .map((area) => (
-            <CitySummaryCard
-              key={area._id}
-              data={area}
-              onClick={() => navigate(`/admin/city/${area._id}`)}
-            />
-          ))}
-      </div>
+   <div className={styles.citySummaryGrid}>
+  {areas?.data?.filter(area => area.total > 0).length === 0 ? (
+    <p className={styles.noPlansText}>No plans for today</p>
+  ) : (
+    areas?.data
+      ?.filter(area => area.total > 0)
+      .map(area => (
+        <CitySummaryCard
+          key={area._id}
+          data={area}
+          onClick={() => navigate(`/admin/city/${area._id}`)}
+        />
+      ))
+  )}
+</div>
+
 
       <div className="mt-5">
         <PendingLinehaulTable />

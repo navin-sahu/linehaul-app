@@ -1,8 +1,9 @@
+import { useState } from "react";
 import styles from "../css/StatusBadge.module.css";
 
 const FLOW = [
   { key: "pending", label: "Not Started", color: "#9ca3af" },
-  { key: "transit", label: "In Transit", color: "#eab308" },
+  { key: "transit", label: "In Transit", color: "#f59e0b" },
   { key: "completed", label: "Completed", color: "#16a34a" }
 ];
 
@@ -29,10 +30,11 @@ const StatusBadge = ({ status = "NOT_STARTED", onChange }) => {
                 className={`${styles.dot} ${isActive ? styles.active : ""}`}
                 style={{
                   backgroundColor: isActive ? s.color : "#fff",
-                  borderColor: s.color
+                  borderColor: s.color,
+                  cursor: isLocked ? "not-allowed" : "pointer"
                 }}
                 disabled={isLocked}
-                onClick={() => onChange(s.key)}
+                onClick={() => handleClick(s.key)}
               />
 
               {i < FLOW.length - 1 && (
