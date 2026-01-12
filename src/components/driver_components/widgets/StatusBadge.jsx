@@ -1,13 +1,23 @@
+import { useState } from "react";
 import styles from "../css/StatusBadge.module.css";
 
 const FLOW = [
   { key: "NOT_STARTED", label: "Not Started", color: "#9ca3af" },
-  { key: "IN_TRANSIT", label: "In Transit", color: "#e5f50bff" },
+  { key: "IN_TRANSIT", label: "In Transit", color: "#f59e0b" },
   { key: "COMPLETED", label: "Completed", color: "green" }
 ];
 
-const StatusBadge = ({ status, onChange }) => {
-  const activeIndex = FLOW.findIndex(s => s.key.toLowerCase() === status.toLowerCase());
+const StatusBadge = ({ initialStatus = "NOT_STARTED", onChange }) => {
+  const [status, setStatus] = useState(initialStatus);
+
+  const activeIndex = FLOW.findIndex(
+    s => s.key.toLowerCase() === status.toLowerCase()
+  );
+
+  const handleClick = (newStatus) => {
+    setStatus(newStatus);          // 🔥 frontend update
+    onChange?.(newStatus);         // optional backend sync
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -21,7 +31,7 @@ const StatusBadge = ({ status, onChange }) => {
         {FLOW.map((s, i) => {
           const isActive = i <= activeIndex;
 
-          // 🔐 LOCK RULE
+          // 🔐 LOCK RULES
           const isLocked =
             status === "COMPLETED" || i <= activeIndex;
 
@@ -31,10 +41,11 @@ const StatusBadge = ({ status, onChange }) => {
                 className={`${styles.dot} ${isActive ? styles.active : ""}`}
                 style={{
                   backgroundColor: isActive ? s.color : "#fff",
-                  borderColor: s.color
+                  borderColor: s.color,
+                  cursor: isLocked ? "not-allowed" : "pointer"
                 }}
                 disabled={isLocked}
-                onClick={() => onChange(s.key)}
+                onClick={() => handleClick(s.key)}
               />
 
               {i < FLOW.length - 1 && (
