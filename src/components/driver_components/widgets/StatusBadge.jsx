@@ -1,29 +1,27 @@
 import styles from "../css/StatusBadge.module.css";
 
 const FLOW = [
-  { key: "NOT_STARTED", label: "Not Started", color: "#9ca3af" },
-  { key: "IN_TRANSIT", label: "In Transit", color: "#e5f50bff" },
-  { key: "COMPLETED", label: "Completed", color: "green" }
+  { key: "pending", label: "Not Started", color: "#9ca3af" },
+  { key: "transit", label: "In Transit", color: "#eab308" },
+  { key: "completed", label: "Completed", color: "#16a34a" }
 ];
 
-const StatusBadge = ({ status, onChange }) => {
-  const activeIndex = FLOW.findIndex(s => s.key.toLowerCase() === status.toLowerCase());
+const StatusBadge = ({ status = "NOT_STARTED", onChange }) => {
+  const activeIndex = Math.max(
+    0,
+    FLOW.findIndex(s => s.key === status)
+  );
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.labels}>
-        {FLOW.map(s => (
-          <span key={s.key}>{s.label}</span>
-        ))}
-      </div>
-
       <div className={styles.bar}>
         {FLOW.map((s, i) => {
           const isActive = i <= activeIndex;
 
-          // 🔐 LOCK RULE
+          // 🔐 locking rules
           const isLocked =
-            status === "COMPLETED" || i <= activeIndex;
+            status === "completed" ||
+            i !== activeIndex + 1; // only NEXT step allowed
 
           return (
             <div key={s.key} className={styles.step}>

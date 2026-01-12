@@ -6,8 +6,12 @@ import AdminMobileNav from "./AdminMobileNav";
 // import AdminChatFab from "../../../chat/admin/AdminChatFab";
 // import AdminChatWidget from "../../../chat/admin/AdminChatWidget";
 import "../css/Style.css";
+import { useDriverSSE } from "../../../hooks/useDriverSSE";
+
 
 const AdminLayout = () => {
+  useDriverSSE();
+
   // const [chatOpen, setChatOpen] = useState(false);
   return (
     <div className="admin-root">

@@ -1,11 +1,24 @@
 import { useState } from "react";
 import Modal from "../../admin_components/widgets/Modal";
 import styles from "../css/TicketModal.module.css";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { driverApi } from "@/api"
 
 const TicketModal = ({ open, jobId, onClose }) => {
   const [issueType, setIssueType] = useState("COMMENT");
   const [message, setMessage] = useState("");
   const [files, setFiles] = useState([]);
+
+    const queryClient = useQueryClient();
+  
+    const createIssueMutation = useMutation({
+      mutationFn: ({driverId, entryId, data}) => 
+        driverApi.updateEntryIssueByDriverId(driverId, entryId, data),
+  
+      onSuccess: () => {
+        queryClient.invalidateQueries(["entries", issueType])
+      }
+    })
 
   const submitTicket = () => {
     if (!message.trim()) {
@@ -13,21 +26,30 @@ const TicketModal = ({ open, jobId, onClose }) => {
       return;
     }
 
-    const formData = new FormData();
-    formData.append("jobId", jobId);
-    formData.append("issueType", issueType);
-    formData.append("message", message);
+    // const formData = new FormData();
+    // formData.append("jobId", jobId);
+    // formData.append("issueType", issueType);
+    // formData.append("message", message);
 
-    files.forEach((file) => {
-      formData.append("files", file);
-    });
+    // files.forEach((file) => {
+    //   formData.append("files", file);
+    // });
 
-    console.log({
-      jobId,
-      issueType,
-      message,
-      files
-    });
+    // console.log({
+    //   jobId,
+    //   issueType,
+    //   message,
+    //   files
+    // });
+    
+    createIssueMutation.mutate({
+      driverId: JSON.parse(localStorage.getItem('user')).id,
+      entryId: jobId,
+      data: {
+        issueType,
+        message
+      }
+    })
 
     onClose();
   };

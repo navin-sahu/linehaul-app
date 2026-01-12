@@ -28,13 +28,13 @@ th {
 .dateTableCell {
     white-space: nowrap;
 }
-.completed {
+.completed,.COMPLETED {
     color: #fff;
     font-weight: 700;
     background-color: green;
         text-transform: capitalize;
 }
-.transit {
+.transit,.IN_TRANSIT {
     color: rgb(255, 255, 255);
     font-weight: 700;
     background-color: rgb(245, 158, 11);

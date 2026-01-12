@@ -5,7 +5,7 @@ import DriverLinehaulData from "../data/DriverLinehaulData";
 import StatusBadge from "../widgets/StatusBadge";
 import RowActions from "./RowActions";
 import styles from "../css/EntriesViewer.module.css";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { driverApi } from "@/api";
 import { formatDDMMYYYY } from "@/utils";
 
@@ -24,15 +24,11 @@ function reducer(state, action) {
 }
 
 
+
 const DriverEntriesViewer = ({ driverName }) => {
+  const queryClient = useQueryClient();
   const driver = JSON.parse(localStorage.getItem("user"));
   const [filters, setFilters] = useState(initialFilters);
-
-  const driverJobs = useMemo(() => {
-    const driverBlock = DriverLinehaulData.find((d) => d.driver === driverName);
-
-    return driverBlock ? driverBlock.jobs : [];
-  }, [driverName]);
 
   /* ================= FILTERED ROWS ================= */
   const [jobOverrides, setJobOverrides] = useState({});
@@ -42,13 +38,9 @@ const DriverEntriesViewer = ({ driverName }) => {
     queryFn: () => driverApi.getEntriesByDriveId(driver.id),
   });
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
 
-  if (error) {
-    return <p>Error loading jobs.</p>;
-  }
+
+  
 
   const driverJobsData = driverEntries?.data || [];
 
@@ -69,24 +61,23 @@ const DriverEntriesViewer = ({ driverName }) => {
           
       );
 
-      console.log(filteredDriverJobsData,filters);
 
+const updateStatusMutation = useMutation({
+  mutationFn: ({ driverId, entryId, status }) =>
+    driverApi.updateEntryStatusByDriverId(driverId, entryId, status),
 
+  onSuccess: () => {
+    // refresh driver jobs after update
+    queryClient.invalidateQueries(['driverJobs', driverName]);
+  },
+});
   /* ================= STATUS UPDATE ================= */
-  const updateRowStatus = (jobId, status) => {
-    setJobOverrides((prev) => {
-      const current = prev[jobId]?.status || "NOT_STARTED";
-
-      // 🔒 Lock COMPLETED
-      if (current === "COMPLETED") return prev;
-
-      return {
-        ...prev,
-        [jobId]: {
-          status,
-          updatedAt: new Date().toISOString(),
-        },
-      };
+  const updateRowStatus = (entryId, newStatus) => {
+    console.log("updating status",entryId,newStatus)
+    updateStatusMutation.mutate({
+      driverId: driver.id,
+      entryId,
+      status: newStatus,
     });
   };
 
@@ -197,7 +188,13 @@ const downloadSingleRowPDF = (row) => {
 };
 
 
+if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
+  if (error) {
+    return <p>Error loading jobs.</p>;
+  }
   /* ================= UI ================= */
   return (
     <div className={`card mt-5`}>
@@ -244,7 +241,7 @@ const downloadSingleRowPDF = (row) => {
                 <th>
                   Rego
                   <input
-                    value={filters.regos}
+                    value={filters.rego}
                     placeholder="Rego"
                     autoComplete="off"
                     onChange={(e) =>
@@ -305,8 +302,8 @@ const downloadSingleRowPDF = (row) => {
                   <td colSpan="12">No jobs assigned</td>
                 </tr>
               ) : (
-                filteredDriverJobsData?.map((r,i) => (
-                  <tr key={i}>
+                filteredDriverJobsData?.map((r) => (
+                  <tr key={r?._id}>
                     <td>{formatDDMMYYYY(r?.plan_date)}</td>
                     <td>{r?.area}</td>
                     <td>{r?.truck}</td>
@@ -327,7 +324,7 @@ const downloadSingleRowPDF = (row) => {
                       <StatusBadge
                         status={r?.status || "NOT_STARTED"}
                         onChange={(newStatus) =>
-                          updateRowStatus(r.jobId, newStatus)
+                          updateRowStatus(r._id, newStatus)
                         }
                       />
                     </td>
@@ -340,7 +337,7 @@ const downloadSingleRowPDF = (row) => {
                         PDF
                       </button>
 
-                      <RowActions row={r} onStatusChange={updateRowStatus} />
+                      <RowActions row={r._id} />
                       </div>
                     </td>
                   </tr>

@@ -4,9 +4,12 @@ import TicketModal from "../widgets/TicketModal";
 import AttachmentsModal from "../widgets/AttachmentsModal";
 import styles from "../css/EntriesViewer.module.css";
 
+
 const RowActions = ({ row }) => {
   const [filesOpen, setFilesOpen] = useState(false);
   const [ticketOpen, setTicketOpen] = useState(false);
+
+
 
 
   /* ---------------- LOCK BODY SCROLL ---------------- */
@@ -49,7 +52,7 @@ const RowActions = ({ row }) => {
 
       <TicketModal
         open={ticketOpen}
-        jobId={row.jobId}
+        jobId={row}
         onClose={() => setTicketOpen(false)}
       />
     </div>
