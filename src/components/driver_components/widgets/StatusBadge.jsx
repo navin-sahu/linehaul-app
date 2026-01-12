@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styles from "../css/StatusBadge.module.css";
 
 const FLOW = [
@@ -34,7 +33,7 @@ const StatusBadge = ({ status = "NOT_STARTED", onChange }) => {
                   cursor: isLocked ? "not-allowed" : "pointer"
                 }}
                 disabled={isLocked}
-                onClick={() => handleClick(s.key)}
+                onClick={() => onChange(s.key)}
               />
 
               {i < FLOW.length - 1 && (
