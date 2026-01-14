@@ -1,7 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import CitySummaryCard from "../widgets/CitySummaryCard";
-import DriverUpdatesData from "../data/DriverUpdatesData";
-import LinehaulPlanData from "../data/LinehaulPlanData";
 import EntriesViewer from "../pages/EntriesViewer";
 import styles from "../css/AdminDashboard.module.css";
 import { useQuery } from "@tanstack/react-query";
