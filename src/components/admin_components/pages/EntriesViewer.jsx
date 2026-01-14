@@ -2,7 +2,6 @@ import { useMemo, useReducer } from "react";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import styles from "../css/EntriesViewer.module.css";
-import LinehaulPlanData from "../data/LinehaulPlanData";
 import { areaAPI } from "@/api";
 import { useQuery } from "@tanstack/react-query";
 import { formatDDMMYYYY } from "@/utils";
