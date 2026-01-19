@@ -6,6 +6,5 @@ export const adminCredentials = {
 export const driverCredentials = [
   { username: "johnsmith", password: "John@123", name: "John" },
   { username: "motu", password: "Motu@123", name: "Frank" },
-  
 ];
 

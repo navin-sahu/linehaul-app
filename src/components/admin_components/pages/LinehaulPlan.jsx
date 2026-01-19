@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { FiEdit2, FiTrash2, FiPlus } from "react-icons/fi";
-import LinehaulPlanData from "../data/LinehaulPlanData";
 import styles from "../css/LinehaulPlan.module.css";
 import EntriesViewer from "./EntriesViewer";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
