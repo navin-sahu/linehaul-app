@@ -17,6 +17,7 @@ th, td {
   vertical-align: top;
   background-color: cadetblue;
   font-size: 12px;
+      font-weight: 500;
 }
 
 th {
